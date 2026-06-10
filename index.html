@@ -20,7 +20,6 @@
   <script type="text/babel" data-presets="react">
 const { useState, useEffect, useRef } = React;
 
-
 const FONT_CSS = `@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Serif+SC:wght@300;400;600;700&display=swap');
 *{box-sizing:border-box;margin:0;padding:0}
 input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
@@ -38,7 +37,7 @@ const T = {
 const ND = {
   1:{
     tag:"天生的开路者",
-    title:"1号人 · 领袖先锋",
+    title:"1 领袖先锋",
     verdict:"此命天生带「首」气，是开局之人，非守成之辈。",
     pos:"你生来便有主导格局的力量——独立、果决、不依附于人。旁人尚在观望时，你已迈出第一步。创造力与魄力是你立身的根本。",
     neg:"「首」气过盛，则刚而易折。你容易把自信变成独断，把坚持变成固执，在不知不觉中把身边人越推越远。最大的关卡，是你以为自己永远正确。",
@@ -50,7 +49,7 @@ const ND = {
   },
   2:{
     tag:"懂得倾听的协调者",
-    title:"2号人 · 和谐使者",
+    title:"2 和谐使者",
     verdict:"此命为「水」性，柔能容物，是天生的调和之人。",
     pos:"你心思细腻、感知敏锐，擅长察言观色、化解纷争。你是难得的倾听者，能让人卸下心防，无论走到哪里都能成为人与人之间的桥梁。",
     neg:"水性太柔，则易失己。你常因怕冲突而委屈自己，主见不足、思虑过重、迟迟难下决定。更要留意：你对外人温和有礼，回到家却容易失了耐心。",
@@ -62,7 +61,7 @@ const ND = {
   },
   3:{
     tag:"光芒四射的舞台之人",
-    title:"3号人 · 创意达人",
+    title:"3 创意达人",
     verdict:"此命带「火」气，光华外露，是天生的舞台之人。",
     pos:"你脑子转得快，眼光更准——别人还在犹豫，你已看准机会一把抓住，执行力极强，从不让灵感停在嘴上。加上与生俱来的创意、感染力与表达天赋，你站到哪里，哪里就是焦点。",
     neg:"火旺则易散。你容易被掌声冲昏头，把虚荣当动力，三分钟热度，事情做到一半就转头追下一个新鲜。最大的关卡，是你抓得住机会，却守不住成果。",
@@ -74,7 +73,7 @@ const ND = {
   },
   4:{
     tag:"沉稳可靠的筑基者",
-    title:"4号人 · 稳健规划师",
+    title:"4 稳健规划师",
     verdict:"此命属「木」，根深方能叶茂，是脚踏实地的筑基之人。",
     pos:"你谨慎稳重、务实可靠，凡事深思熟虑、布局长远。你给人安全感，为人诚恳守信。再大的工程，交到你手上都能稳稳落地。",
     neg:"思虑过头，则成内耗。你容易想太多、钻牛角尖，偏于固执保守、抗拒变化，有时为一个小细节较真到底，把自己困在原地。",
@@ -86,7 +85,7 @@ const ND = {
   },
   5:{
     tag:"无拘无束的开拓者",
-    title:"5号人 · 自由探险家",
+    title:"5 自由探险家",
     verdict:"此命为驿马之星，动中生财，静则气滞，是天生的领路人。",
     pos:"你身上有一股别人学不来的领袖气场，加上过人的适应力与口才。你不畏未知、越变越强，天生适合开拓、闯荡、带队前行。困住别人的环境，正是你大展身手的地方。",
     neg:"驿马太旺，易失其根。你追求自由，却容易把「随性」当借口，逃避该负的责任；一时冲动，常让到手的局面功亏一篑。自由若无根，便成漂泊。",
@@ -98,7 +97,7 @@ const ND = {
   },
   6:{
     tag:"温暖周到的守护者",
-    title:"6号人 · 爱心守护者",
+    title:"6 爱心守护者",
     verdict:"此命属「金」带福，重情重义，是天生的守护之人。",
     pos:"你责任感强、心地仁厚，把家庭与身边人放在心上，乐于付出、为人公正。有你在的地方，总让人感到安心与温暖。",
     neg:"付出太满，则伤己身。你容易过度给予、追求完美、偏挑剔爱抱怨，还常忍不住干涉他人。更要留意一点：你赚钱不难，难的是守住——财来财去，常留不住。",
@@ -110,7 +109,7 @@ const ND = {
   },
   7:{
     tag:"冷静深刻的思考者",
-    title:"7号人 · 洞察分析师",
+    title:"7 洞察分析师",
     verdict:"此命为「水」中藏智，静水流深，是天生的洞察之人。",
     pos:"你理性冷静、善于思辨，洞察力敏锐，总能看穿表象、直抵真相。你追求真理、不随波逐流，人缘也比想象中好。",
     neg:"思深则易困。你容易过度理性、多疑孤僻，遇事爱拖延、钻牛角尖。想得太多，反而常错过该出手的时机，也让亲近的人难以靠近。",
@@ -122,7 +121,7 @@ const ND = {
   },
   8:{
     tag:"掌控全局的实干家",
-    title:"8号人 · 野心掌舵者",
+    title:"8 野心掌舵者",
     verdict:"此命带「火」性权欲，志在高处，是天生的掌局之人。",
     pos:"你有野心、有抱负，领导力与执行力俱强，敢扛事、扛得起。一旦认定方向，便能调动一切资源把事做成，是天生的掌舵者。",
     neg:"权欲过盛，则失其衡。你掌控欲强、性子易急，偏功利、过度看重物质，容易因权力与金钱与人起冲突，也容易在追逐中迷失初心。",
@@ -134,7 +133,7 @@ const ND = {
   },
   9:{
     tag:"心怀天下的理想家",
-    title:"9号人 · 博爱梦想家",
+    title:"9 博爱梦想家",
     verdict:"此命属「木」之极，胸怀寬广，是天生的成全之人。",
     pos:"你心怀大爱、目光长远，待人无私、富有同理心，擅长合作与成全他人。你看得见别人看不见的远方，是天生的理想主义者。",
     neg:"理想太高，则易失地。你容易脱离现实、缺乏自我边界，对人轻信而吃亏受骗，付出再多也常被人当作理所当然。",
@@ -616,7 +615,7 @@ function GroupCard({group,idx,show,locked}){
                     background:`radial-gradient(circle at 35% 30%,#f5e090,#c9a84c,#5a4418)`,
                     display:"flex",alignItems:"center",justifyContent:"center",
                     color:"#1a0e00",fontSize:12,fontWeight:700,fontFamily:"Georgia,serif"}}>{n}</div>
-                  <span style={{color:T.goldLt,fontSize:12,fontWeight:600}}>{ND[n]?.title?.split(" · ")[1]||ND[n]?.tag}</span>
+                  <span style={{color:T.goldLt,fontSize:12,fontWeight:600}}>{ND[n]?.title?.split(" · ")[1]||ND[n]?.title||ND[n]?.tag}</span>
                 </div>
                 <div style={{color:T.green,fontSize:12,marginBottom:2,lineHeight:1.6}}>✦ {ND[n]?.pos}</div>
                 <div style={{color:T.red,fontSize:12,lineHeight:1.6}}>◈ {ND[n]?.neg}</div>
@@ -725,7 +724,7 @@ function InputPage({onBack,onResult}){
         color:T.textDim,cursor:"pointer",fontSize:12,marginBottom:28,padding:0}}>← 返回</button>
       <h2 style={{color:T.text,fontSize:22,fontWeight:300,letterSpacing:2,marginBottom:24}}>输入生日</h2>
       <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:10,marginBottom:24}}>
-        {[["日 Date","day","16"],["月 Month","month","04"],["世纪 Century","cent","19"],["年 Year","yr","81"]].map(([lbl,k,ph])=>(
+        {[["日 Date","day","DD"],["月 Month","month","MM"],["世纪 Century","cent","CC"],["年 Year","yr","YY"]].map(([lbl,k,ph])=>(
           <div key={k}>
             <label style={{color:T.textDim,fontSize:9,display:"block",marginBottom:6}}>{lbl}</label>
             <input style={iS} type="number" value={f[k]}
@@ -846,7 +845,7 @@ function FortuneTab({vars,show,paid,onUpgrade}){
             <div style={{color:T.textDim,fontSize:11}}>逐月运势 · 财运姻缘走向</div>
             <div style={{marginTop:8,padding:"8px 18px",borderRadius:20,
               background:`linear-gradient(135deg,${T.goldDk},${T.gold})`,
-              color:"#0a0700",fontSize:12,fontWeight:700}}>7 天免费试用</div>
+              color:"#0a0700",fontSize:12,fontWeight:700}}>一次解锁 · S$8.80</div>
           </div>
         )}
         <Line icon="💰" label="财运" text={f.money}/>
@@ -867,7 +866,6 @@ function FortuneTab({vars,show,paid,onUpgrade}){
 
 /* ── PAYWALL (persuasive subscription screen) ── */
 function Paywall({onClose,onSubscribe}){
-  const [plan,setPlan]=useState("year"); // year preselected (higher value)
   const benefits=[
     ["🔮","流年完整运势","全年12个月逐月详批，把握每一个转折"],
     ["📅","今日运势深度版","每日财运/感情/事业详解 + 幸运指引"],
@@ -911,41 +909,14 @@ function Paywall({onClose,onSubscribe}){
           ))}
         </div>
 
-        {/* Plans */}
-        <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:18}}>
-          {/* Annual */}
-          <button onClick={()=>setPlan("year")} style={{position:"relative",textAlign:"left",
-            padding:"16px 18px",borderRadius:14,cursor:"pointer",
-            background:plan==="year"?`linear-gradient(135deg,#1f1708,#13100b)`:T.card,
-            border:`2px solid ${plan==="year"?T.gold:T.borderG}`}}>
-            <div style={{position:"absolute",top:-10,right:14,background:`linear-gradient(135deg,${T.gold},${T.goldLt})`,
-              color:"#0a0700",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20}}>
-              最划算 · 省 44%
-            </div>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-              <div>
-                <div style={{color:T.text,fontSize:15,fontWeight:700}}>年度方案</div>
-                <div style={{color:T.textDim,fontSize:11,marginTop:2}}>每月仅 RM 16.6 · 一次省一年</div>
-              </div>
-              <div style={{textAlign:"right"}}>
-                <div style={{color:T.goldLt,fontSize:20,fontWeight:700}}>RM 199</div>
-                <div style={{color:T.textDim,fontSize:10,textDecoration:"line-through"}}>RM 358</div>
-              </div>
-            </div>
-          </button>
-          {/* Monthly */}
-          <button onClick={()=>setPlan("month")} style={{textAlign:"left",
-            padding:"16px 18px",borderRadius:14,cursor:"pointer",
-            background:plan==="month"?`linear-gradient(135deg,#1f1708,#13100b)`:T.card,
-            border:`2px solid ${plan==="month"?T.gold:T.borderG}`}}>
-            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
-              <div>
-                <div style={{color:T.text,fontSize:15,fontWeight:700}}>月度方案</div>
-                <div style={{color:T.textDim,fontSize:11,marginTop:2}}>灵活订阅，随时取消</div>
-              </div>
-              <div style={{color:T.goldLt,fontSize:20,fontWeight:700}}>RM 29.90</div>
-            </div>
-          </button>
+        {/* Price card */}
+        <div style={{borderRadius:16,padding:"20px 18px",marginBottom:18,textAlign:"center",
+          background:`linear-gradient(135deg,#1f1708,#13100b)`,border:`2px solid ${T.gold}`}}>
+          <div style={{color:T.textDim,fontSize:11,letterSpacing:2,marginBottom:8}}>一次解锁 · 永久使用</div>
+          <div style={{color:T.goldLt,fontSize:42,fontWeight:700,fontFamily:"Georgia,serif",letterSpacing:1}}>
+            S$8.80
+          </div>
+          <div style={{color:T.textDim,fontSize:11,marginTop:6}}>买断全功能 · 无需月费</div>
         </div>
 
         {/* CTA */}
@@ -953,11 +924,10 @@ function Paywall({onClose,onSubscribe}){
           background:`linear-gradient(135deg,${T.goldDk},${T.gold},${T.goldLt})`,
           border:"none",cursor:"pointer",fontSize:16,fontWeight:700,color:"#0a0700",
           fontFamily:"'Noto Serif SC',serif",boxShadow:`0 4px 24px ${T.goldGl}`}}>
-          开启 7 天免费试用
+          一次解锁 · S$8.80
         </button>
         <div style={{textAlign:"center",color:T.textDim,fontSize:11,marginTop:10,lineHeight:1.6}}>
-          试用期内免费 · 到期前可随时取消<br/>
-          {plan==="year"?"试用结束后 RM199/年":"试用结束后 RM29.90/月"} · 通过 App Store / Google Play 计费
+          即将推出 · 敬请期待<br/>解锁功能将在 App Store / Google Play 上线
         </div>
 
         {/* Social proof */}
@@ -973,12 +943,11 @@ function Paywall({onClose,onSubscribe}){
         {/* Legal */}
         <div style={{marginTop:18,textAlign:"center"}}>
           <div style={{display:"flex",justifyContent:"center",gap:16,marginBottom:8}}>
-            <span style={{color:T.textDim,fontSize:10,cursor:"pointer",textDecoration:"underline"}}>恢复购买</span>
             <span style={{color:T.textDim,fontSize:10,cursor:"pointer",textDecoration:"underline"}}>服务条款</span>
             <span style={{color:T.textDim,fontSize:10,cursor:"pointer",textDecoration:"underline"}}>隐私政策</span>
           </div>
           <div style={{color:T.textDim,fontSize:9,lineHeight:1.5}}>
-            订阅会自动续期，除非在当期结束前至少24小时取消。<br/>本应用结果仅供娱乐参考。
+            本应用结果仅供娱乐参考。
           </div>
         </div>
       </div>
@@ -1019,8 +988,6 @@ function ReportPage({data,onBack}){
           <div style={{position:"absolute",top:-40,right:-40,width:140,height:140,
             borderRadius:"50%",background:`${T.gold}08`,border:`1px solid ${T.gold}18`,pointerEvents:"none"}}/>
           <div style={{color:T.textDim,fontSize:10,letterSpacing:4,marginBottom:8}}>主 性 格</div>
-          <div style={{color:T.goldLt,fontSize:34,fontWeight:700,letterSpacing:8,
-            fontFamily:"Georgia,serif",marginBottom:6}}>{vars.C} · {vars.F} · {vars.G}</div>
           <div style={{color:T.gold,fontSize:15,fontWeight:600}}>
             {ND[vars.G]?.title}
           </div>
@@ -1115,6 +1082,8 @@ function ReportPage({data,onBack}){
               background:T.card,border:`1px solid ${T.borderG}`}}>
               <div style={{color:T.text,fontSize:13,fontWeight:600,marginBottom:6}}>
                 数字特质参考 / Number Character Reference</div>
+              <div style={{color:T.textDim,fontSize:11,lineHeight:1.6,marginBottom:6}}>
+                以下数字根据您生日所有计算值判断——出现即为已具备，未出现则为待培养。</div>
               <div style={{display:"flex",gap:8}}>
                 <div style={{display:"flex",alignItems:"center",gap:5}}>
                   <div style={{width:10,height:10,borderRadius:"50%",background:T.green}}/>
@@ -1141,26 +1110,14 @@ function ReportPage({data,onBack}){
             {paid?(
               <FiveTable vars={vars}/>
             ):(
-              <div style={{position:"relative"}}>
-                {/* blurred teaser */}
-                <div style={{filter:"blur(7px)",pointerEvents:"none",userSelect:"none",
-                  maxHeight:340,overflow:"hidden"}}>
-                  <FiveTable vars={vars}/>
-                </div>
-                {/* lock overlay */}
-                <div style={{position:"absolute",inset:0,borderRadius:14,
-                  background:"linear-gradient(180deg,rgba(10,7,5,0.5),rgba(10,7,5,0.96))",
-                  display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
-                  gap:10,cursor:"pointer",padding:20,textAlign:"center"}} onClick={()=>setShowPaywall(true)}>
-                  <div style={{fontSize:30}}>🔒</div>
-                  <div style={{color:T.goldLt,fontSize:17,fontWeight:700}}>解锁五行能量分析</div>
-                  <div style={{color:T.textDim,fontSize:12,lineHeight:1.7,maxWidth:280}}>
-                    看清你在五大人生领域的能量分布——<br/>自我决断 · 子女财运 · 事业姻缘 · 创业健康 · 亲情贵人</div>
-                  <div style={{marginTop:6,padding:"11px 26px",borderRadius:24,
-                    background:`linear-gradient(135deg,${T.goldDk},${T.gold},${T.goldLt})`,
-                    color:"#0a0700",fontSize:14,fontWeight:700,
-                    boxShadow:`0 4px 20px ${T.goldGl}`}}>7 天免费试用</div>
-                </div>
+              <div style={{borderRadius:14,padding:"40px 20px",textAlign:"center",
+                background:`linear-gradient(135deg,#1a1208,#0f0c05)`,border:`1px solid ${T.gold}44`}}>
+                <div style={{fontSize:36,marginBottom:14}}>🔒</div>
+                <div style={{color:T.goldLt,fontSize:18,fontWeight:700,marginBottom:10}}>一次解锁 · S$8.80</div>
+                <div style={{color:T.textDim,fontSize:12,lineHeight:1.8,marginBottom:20,maxWidth:280,margin:"0 auto 20px"}}>
+                  看清你在五大人生领域的能量分布——<br/>自我决断 · 子女财运 · 事业姻缘 · 创业健康 · 亲情贵人</div>
+                <div style={{color:T.amber,fontSize:13,fontWeight:600,letterSpacing:1}}>
+                  即将推出 · 敬请期待</div>
               </div>
             )}
           </div>
@@ -1194,15 +1151,16 @@ function ReportPage({data,onBack}){
             {!paid&&(
               <div style={{margin:"20px 0",padding:22,borderRadius:16,textAlign:"center",
                 background:`linear-gradient(135deg,#1a1208,#0f0c05)`,border:`1px solid ${T.gold}55`}}>
-                <div style={{color:T.goldLt,fontSize:17,fontWeight:600,marginBottom:8}}>还有 10 组深度解读等你揭晓</div>
+                <div style={{color:T.goldLt,fontSize:17,fontWeight:600,marginBottom:8}}>还有 10 组深度解读</div>
                 <div style={{color:T.textDim,fontSize:12,marginBottom:18,lineHeight:1.7}}>
-                  事业旅程 · 婚姻走向 · 财富密码<br/>隐藏潜意识 · 流年完整运势</div>
+                  事业旅程 · 婚姻走向 · 财富密码<br/>隐藏潜意识 · 亲情贵人</div>
+                <div style={{color:"#c9a84c",fontSize:13,fontWeight:600,letterSpacing:1,marginBottom:18}}>即将推出 · 敬请期待</div>
                 <button onClick={()=>setShowPaywall(true)} style={{
                   width:"100%",padding:15,borderRadius:11,
                   background:`linear-gradient(135deg,${T.goldDk},${T.gold},${T.goldLt})`,
                   border:"none",cursor:"pointer",fontSize:15,fontWeight:700,
                   color:"#0a0700",fontFamily:"'Noto Serif SC',serif",
-                  boxShadow:`0 4px 20px ${T.goldGl}`}}>7 天免费试用 · 解锁完整命盘</button>
+                  boxShadow:`0 4px 20px ${T.goldGl}`}}>一次解锁 · 查看完整命盘</button>
               </div>
             )}
           </div>
