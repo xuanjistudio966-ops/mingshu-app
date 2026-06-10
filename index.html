@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="theme-color" content="#0a0705"/>
+  <title>命數 Ming Shu · 易经数字命理</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{background:#0a0705;color:#e8dcc8;font-family:'Noto Serif SC',serif;-webkit-font-smoothing:antialiased;}
+    #root{min-height:100vh;}
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.2/babel.min.js"></script>
+  <script type="text/babel" data-presets="react">
+const { useState, useEffect, useRef } = React;
+
+
+const FONT_CSS = `@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Noto+Serif+SC:wght@300;400;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+input[type=number]{-moz-appearance:textfield}`;
+
+const T = {
+  bg:"#0a0705", card:"#13100b", cardAlt:"#1a1510",
+  gold:"#c9a84c", goldLt:"#edd98a", goldDk:"#6a5520", goldGl:"#c9a84c33",
+  red:"#e05555", green:"#4caa6e", blue:"#5588cc", amber:"#e0993a",
+  text:"#f0e6d0", textSub:"#b0a080", textDim:"#7a6a50",
+  border:"#2a2015", borderG:"#3a2f1a",
+};
+
+/* ─── NUMBER DATA ──────────────────────── */
+const ND = {
+  1:{
+    tag:"天生的开路者",
+    title:"1号人 · 领袖先锋",
+    verdict:"此命天生带「首」气，是开局之人，非守成之辈。",
+    pos:"你生来便有主导格局的力量——独立、果决、不依附于人。旁人尚在观望时，你已迈出第一步。创造力与魄力是你立身的根本。",
+    neg:"「首」气过盛，则刚而易折。你容易把自信变成独断，把坚持变成固执，在不知不觉中把身边人越推越远。最大的关卡，是你以为自己永远正确。",
+    career:"领导岗位、自主创业、团队统帅、独立顾问",
+    emotion:"渴望被肯定，对亲密关系期待较高，重视双方平等相处。",
+    lesson:"真正的领袖不在于压过众人，而在于让众人愿意追随。学会低头听人言，把「我来扛」换成「我们一起」，你的格局才能从一人之雄走向众人之主。",
+    miss:"缺1：主见不足、不敢站出来带头、容易随波逐流。",
+    el:"金",
+  },
+  2:{
+    tag:"懂得倾听的协调者",
+    title:"2号人 · 和谐使者",
+    verdict:"此命为「水」性，柔能容物，是天生的调和之人。",
+    pos:"你心思细腻、感知敏锐，擅长察言观色、化解纷争。你是难得的倾听者，能让人卸下心防，无论走到哪里都能成为人与人之间的桥梁。",
+    neg:"水性太柔，则易失己。你常因怕冲突而委屈自己，主见不足、思虑过重、迟迟难下决定。更要留意：你对外人温和有礼，回到家却容易失了耐心。",
+    career:"协调沟通、心理辅导、教育育人、护理照护",
+    emotion:"乐于倾诉，看重关系的和谐，常因害怕冲突而委屈自己。",
+    lesson:"懂得照顾别人，更要学会照顾自己。练习独立做决定、敢于说「不」，把对外的那份温柔，也留几分给最亲的人。",
+    miss:"缺2：在家中缺乏耐心、不擅倾听、温柔的话说不出口、容易影响家庭和睦。",
+    el:"水",
+  },
+  3:{
+    tag:"光芒四射的舞台之人",
+    title:"3号人 · 创意达人",
+    verdict:"此命带「火」气，光华外露，是天生的舞台之人。",
+    pos:"你脑子转得快，眼光更准——别人还在犹豫，你已看准机会一把抓住，执行力极强，从不让灵感停在嘴上。加上与生俱来的创意、感染力与表达天赋，你站到哪里，哪里就是焦点。",
+    neg:"火旺则易散。你容易被掌声冲昏头，把虚荣当动力，三分钟热度，事情做到一半就转头追下一个新鲜。最大的关卡，是你抓得住机会，却守不住成果。",
+    career:"艺术创作、表演演艺、市场推广、公关传播",
+    emotion:"主动热情，渴望被赞赏和关注，常因面子问题闹矛盾。",
+    lesson:"你的表达力与行动力本是利器，别浪费在表面热闹上。学会把一件事做到底、接纳不完美、脚踏实地，你的光才能真正照亮一片天，而不是闪一下就灭。",
+    miss:"缺3：把握机会的能力较弱、不擅表达、看不见眼前的机会、容易懒散。",
+    el:"火",
+  },
+  4:{
+    tag:"沉稳可靠的筑基者",
+    title:"4号人 · 稳健规划师",
+    verdict:"此命属「木」，根深方能叶茂，是脚踏实地的筑基之人。",
+    pos:"你谨慎稳重、务实可靠，凡事深思熟虑、布局长远。你给人安全感，为人诚恳守信。再大的工程，交到你手上都能稳稳落地。",
+    neg:"思虑过头，则成内耗。你容易想太多、钻牛角尖，偏于固执保守、抗拒变化，有时为一个小细节较真到底，把自己困在原地。",
+    career:"金融财会、工程技术、行政管理、需严谨的岗位",
+    emotion:"看重安全感与稳定，对感情专一忠诚，容易因规矩问题起冲突。",
+    lesson:"稳是你的底气，但别让稳变成困。学着拥抱变化、尝试新事物、跳出固有思维，真正的安全感来自内心，而非一成不变。",
+    miss:"缺4：规划掌控力弱、记性不佳、容易丢三落四、消费投资缺乏节制。",
+    el:"木",
+  },
+  5:{
+    tag:"无拘无束的开拓者",
+    title:"5号人 · 自由探险家",
+    verdict:"此命为驿马之星，动中生财，静则气滞，是天生的领路人。",
+    pos:"你身上有一股别人学不来的领袖气场，加上过人的适应力与口才。你不畏未知、越变越强，天生适合开拓、闯荡、带队前行。困住别人的环境，正是你大展身手的地方。",
+    neg:"驿马太旺，易失其根。你追求自由，却容易把「随性」当借口，逃避该负的责任；一时冲动，常让到手的局面功亏一篑。自由若无根，便成漂泊。",
+    career:"探索开拓、销售业务、媒体记者、表演演艺",
+    emotion:"向往自由、不喜被束缚，感情里常在自由与责任之间挣扎。",
+    lesson:"你的课题不是收起翅膀，而是学会带着责任飞。给自由一个落脚的根，培养耐心与坚持，你的闯荡才能真正开花结果，而非空有热闹一场。",
+    miss:"缺5：方向容易被人带偏、缺乏目标、时常迷茫、原地踏步。",
+    el:"土",
+  },
+  6:{
+    tag:"温暖周到的守护者",
+    title:"6号人 · 爱心守护者",
+    verdict:"此命属「金」带福，重情重义，是天生的守护之人。",
+    pos:"你责任感强、心地仁厚，把家庭与身边人放在心上，乐于付出、为人公正。有你在的地方，总让人感到安心与温暖。",
+    neg:"付出太满，则伤己身。你容易过度给予、追求完美、偏挑剔爱抱怨，还常忍不住干涉他人。更要留意一点：你赚钱不难，难的是守住——财来财去，常留不住。",
+    career:"医疗健康、教育育人、公益慈善、心理辅导",
+    emotion:"看重家庭与关系，愿意为对方付出，却常因付出过度而身心俱疲。",
+    lesson:"在帮别人之前，先问自己一句：我的杯子满了吗？学会照顾好自己、懂得拒绝、把守财看得和赚钱一样重，你的爱才能长久。",
+    miss:"缺6：财运较弱、看不见赚钱机会、容易在钱财上吃亏受骗。",
+    el:"金",
+  },
+  7:{
+    tag:"冷静深刻的思考者",
+    title:"7号人 · 洞察分析师",
+    verdict:"此命为「水」中藏智，静水流深，是天生的洞察之人。",
+    pos:"你理性冷静、善于思辨，洞察力敏锐，总能看穿表象、直抵真相。你追求真理、不随波逐流，人缘也比想象中好。",
+    neg:"思深则易困。你容易过度理性、多疑孤僻，遇事爱拖延、钻牛角尖。想得太多，反而常错过该出手的时机，也让亲近的人难以靠近。",
+    career:"科研学术、研究分析、哲学思辨、调查侦查",
+    emotion:"需要独处空间，感情里偏理性，常因想太多而影响关系。",
+    lesson:"看清真相只是开始，敢于行动与信任才是修行。接受现实、走出思维的迷宫，多与人建立真心的连接，智慧才不至于成为孤岛。",
+    miss:"缺7：常成为他人的贵人却少有人帮自己、关键时刻孤立无援、遇险难有人相助。",
+    el:"水",
+  },
+  8:{
+    tag:"掌控全局的实干家",
+    title:"8号人 · 野心掌舵者",
+    verdict:"此命带「火」性权欲，志在高处，是天生的掌局之人。",
+    pos:"你有野心、有抱负，领导力与执行力俱强，敢扛事、扛得起。一旦认定方向，便能调动一切资源把事做成，是天生的掌舵者。",
+    neg:"权欲过盛，则失其衡。你掌控欲强、性子易急，偏功利、过度看重物质，容易因权力与金钱与人起冲突，也容易在追逐中迷失初心。",
+    career:"企业经营、政经管理、金融投资、统筹决策",
+    emotion:"有担当、会照顾人，但掌控欲较强，容易因权力与金钱起冲突。",
+    lesson:"成大事者，先要赢得人心。在物质与精神之间求平衡，对人对己都坦诚，懂得放手与信任，你的版图才能走得更远、更稳。",
+    miss:"缺8：容易内耗低落、对事漠不关心、错失贵人相助、抗压能力弱、身边缺少知心人。",
+    el:"火",
+  },
+  9:{
+    tag:"心怀天下的理想家",
+    title:"9号人 · 博爱梦想家",
+    verdict:"此命属「木」之极，胸怀寬广，是天生的成全之人。",
+    pos:"你心怀大爱、目光长远，待人无私、富有同理心，擅长合作与成全他人。你看得见别人看不见的远方，是天生的理想主义者。",
+    neg:"理想太高，则易失地。你容易脱离现实、缺乏自我边界，对人轻信而吃亏受骗，付出再多也常被人当作理所当然。",
+    career:"公益慈善、企业经营、思想引领、组织领导",
+    emotion:"乐于付出、关心他人，却常因付出过度而忽略自己，需要被需要的感觉。",
+    lesson:"心怀天下，先要立稳脚下。建立自我边界、学会爱自己，在付出与回报之间找到平衡，让理想踩在现实的土地上，才能真正开花结果。",
+    miss:"缺9：做事难有结果、容易半途而废、付出却得不到认可。",
+    el:"木",
+  },
+};
+
+const EL_MAP={1:"金",2:"水",3:"火",4:"木",5:"土",6:"金",7:"水",8:"火",9:"木"};
+const EL_CLR={金:"#C8A96E",水:"#6AACCC",火:"#E07A5F",木:"#7DBF7A",土:"#C4A882"};
+const EL_EN={金:"METAL",水:"WATER",火:"FIRE",木:"WOOD",土:"EARTH"};
+const GEN_ORD=["木","火","土","金","水"];
+
+const WARN={
+  career:["112","123","213","393","933","167","358","538"],
+  marry:["112","123","213","167","191","911","134","314","145","279","729","415","382","832","483","843","786","876","887","999"],
+  health:["112","189","819","382","832","393","933","494","944","898","988"],
+  legal:["112","178","718","224","292","922","731","483","843","448","595","955","999"],
+  wealth:["156","516","336","663","369","639","696","966","999"],
+};
+function getFlags(nums){
+  const s=nums.slice(0,3).join("");
+  const f=[];
+  if(WARN.wealth.includes(s))f.push({label:"⭐ 财富密码",clr:T.goldLt});
+  if(WARN.career.includes(s))f.push({label:"⚠️ 事业留意",clr:T.amber});
+  if(WARN.marry.includes(s))f.push({label:"⚠️ 婚姻留意",clr:T.red});
+  if(WARN.health.includes(s))f.push({label:"⚠️ 健康留意",clr:T.green});
+  if(WARN.legal.includes(s))f.push({label:"⚠️ 法律留意",clr:"#a87ae8"});
+  return f;
+}
+
+/* ─── MATH ─────────────────────────────── */
+function red(n){while(n>9)n=String(n).split("").reduce((a,b)=>a+parseInt(b),0);return n;}
+
+function calcVars(day,month,cent,yr){
+  const A=red(day),B=red(month),C=red(A+B);
+  const D=red(cent),E=red(yr),F=red(D+E);
+  const G=red(C+F),H=red(C+G),I=red(F+G),J=red(I+H);
+  const K=red(A+C),L=red(B+C),M=red(K+L);
+  const N=red(D+F),O=red(E+F),P=red(N+O);
+  return {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P};
+}
+
+function makeGroups(v){
+  const{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P}=v;
+  return[
+    {id:1,code:"ABC",zh:"事业",en:"Career",nums:[A,B,C]},
+    {id:2,code:"DEF",zh:"婚姻",en:"Marriage",nums:[D,E,F]},
+    {id:3,code:"CFG",zh:"自身",en:"Self",nums:[C,F,G]},
+    {id:4,code:"CGH",zh:"人生前半段",en:"Life · First Half",nums:[C,G,H]},
+    {id:5,code:"FGI",zh:"人生后半段",en:"Life · Second Half",nums:[F,G,I]},
+    {id:6,code:"IHJ",zh:"子女/下属",en:"Children / Subordinates",nums:[I,H,J]},
+    {id:7,code:"ACK",zh:"事业前期",en:"Career · Early",nums:[A,C,K]},
+    {id:8,code:"BCL",zh:"事业后期",en:"Career · Later",nums:[B,C,L]},
+    {id:9,code:"KLM",zh:"当下",en:"Present",nums:[K,L,M]},
+    {id:10,code:"DFN",zh:"婚姻前期",en:"Marriage · Early",nums:[D,F,N]},
+    {id:11,code:"EFO",zh:"婚姻后期",en:"Marriage · Later",nums:[E,F,O]},
+    {id:12,code:"NOP",zh:"未来/健康/姻亲",en:"Future / Health / In-laws",nums:[N,O,P]},
+    {id:13,code:"隐藏潜意识",zh:"隐藏潜意识",en:"Hidden Subconscious",nums:hiddenDigits(C,F,G),is13:true},
+  ];
+}
+
+// Hidden subconscious: double each of C,F,G separately, reduce any 2-digit result.
+// e.g. C=2,F=1,G=3 -> 4,2,6 ; C=7,F=6,G=8 -> 14→5, 12→3, 16→7 -> 5,3,7
+function hiddenDigits(C,F,G){
+  return [C,F,G].map(d=>red(d*2));
+}
+
+function getMissing(v){
+  const agNums=[v.A,v.B,v.C,v.D,v.E,v.F,v.G];
+  return [1,2,3,4,5,6,7,8,9].filter(n=>!agNums.includes(n));
+}
+
+function countEls(v){
+  const ct={金:0,水:0,火:0,木:0,土:0};
+  Object.values(v).forEach(n=>{if(EL_MAP[n])ct[EL_MAP[n]]++;});
+  return ct;
+}
+
+function getFiveBoxes(mainEl,v){
+  const start=GEN_ORD.indexOf(mainEl);
+  const order=start<0?GEN_ORD:[...GEN_ORD.slice(start),...GEN_ORD.slice(0,start)];
+  const all=Object.values(v);
+  return order.map(el=>({el,count:all.filter(n=>EL_MAP[n]===el).length}));
+}
+
+/* ─── FIVE-BOX READINGS (master voice, 断言+解读+点拨) ─── */
+const BOX_BENCH=[4,3,3,3,3];
+const BOX_META=[
+  {icon:"◈",name:"自我决断",term:"自己 · Self"},
+  {icon:"❖",name:"子女与财",term:"子女钱财 · Children & Wealth"},
+  {icon:"❉",name:"事业姻缘",term:"事业伴侣 · Career & Partner"},
+  {icon:"❂",name:"创业与健康",term:"官鬼疾病 · Business & Health"},
+  {icon:"❀",name:"亲情与贵人",term:"父母贵人 · Family & Benefactor"},
+];
+const BOX_CONTENT=[
+  { // 1 自我决断 benchmark 4
+    low:{v:"你做大决定前，总要先问过几个人才安心。",r:"关键时刻容易犹豫，主见不够坚定，拿不定主意时倾向先听别人怎么说。",t:"从生活里的小事开始练习快速拍板，一点一点把果断与自律养起来。"},
+    ideal:{v:"你心里有主见，关键时刻拿得定主意。",r:"自律性强、独立思考，能为自己的决定负责，不轻易被人左右。",t:"保持这份定力，但在最重要的关头，也记得听一两句逆耳忠言。"},
+    high:{v:"你太有主见，几乎听不进别人的话。",r:"决断力过强，容易固执己见、独断专行，把自信变成了不肯低头。",t:"多留意身边的声音，过度的自我会让能量失衡，也会把人推远。"},
+  },
+  { // 2 子女钱财 benchmark 3
+    low:{v:"你的福分适合精养，子女不必多，财富靠自己一步步挣。",r:"子女面——你最适合养育较少的孩子，少而精反而带得更省心。财运面——早年财富需要亲手打拼，来得实在但不轻松。",t:"别勉强追求多子或快富，专注经营好手上的一份，反而更稳。"},
+    ideal:{v:"子女缘与早年财，都恰到好处。",r:"子女面——你有能力照顾好身边的孩子，家庭节奏平衡。财运面——早年财运平稳，努力就有回报。",t:"守住这份平衡，量力而为，不贪多即是福。"},
+    high:{v:"你能带的孩子多，但早年的财，得用汗水换。",r:"子女面——你有照顾多个孩子的能量与心力。财运面——财富潜力大，但尤其在人生早期，往往要付出大量努力才能积累，钱不会轻易来。",t:"早年辛苦是常态，别灰心；把勤奋当本钱，财富会随时间累积。"},
+  },
+  { // 3 事业伴侣 benchmark 3, zero rule
+    low:{v:"找工作、找对象，对你来说都得多花点力气。",r:"事业面——求职路上较辛苦，机会要主动争取。感情面——遇到合适伴侣的缘分较慢，需耐心经营。",t:"主动出击是你的解药——多投、多见、多连接，缘分和机会都靠走出去。"},
+    ideal:{v:"工作与缘分，对你来说来得自然。",r:"事业面——求职顺遂，机会不缺。感情面——容易遇到投缘的对象，缘分流动顺畅。",t:"把握眼前的机会与缘分，别因为来得太容易而不珍惜。"},
+    high:{v:"机会与桃花都旺，但旺过头，别处就空了。",r:"事业面——工作机会唾手可得。感情面——桃花旺盛、追求者不少。但命格讲平衡，这一格过旺，必有另一格偏弱。",t:"机会多不代表都要抓，懂得取舍；把过盛的精力，匀一些给较弱的部分。"},
+    zero:{v:"事业与感情，命中往往只能成全一头。",r:"此格为零，你这一生在事业与感情之间常被迫二选一——事业旺时感情冷清，感情圆满时事业停滞。",t:"认清这份取舍，主动安排人生节奏，在不同阶段专注一头，反而能各自圆满。"},
+  },
+  { // 4 官鬼疾病 benchmark 3, zero rule
+    low:{v:"你更适合稳稳上班，创业的路要三思。",r:"创业面——自立门户的胜算不高，稳定的工作更适合你。健康面——生病后恢复较慢，需要更细心地保养身体。",t:"与其冒险创业，不如在岗位上深耕；平时多注意休养，别硬撑。"},
+    ideal:{v:"想创业，你扛得住；身子骨，也恢复得快。",r:"创业面——你具备自立门户的能力，做不做由你。健康面——病后恢复力不错，底子稳健。",t:"创业与否量力而行；保持现有的好底子，规律作息别透支。"},
+    high:{v:"你天生是当老板的料，恢复力也强——但旺过头，别处会被掏空。",r:"创业面——非常适合自己当家做主，创业气场强。健康面——病后恢复极快。但命格讲平衡，这一格过旺，必有一格偏低。",t:"创业气场强是好事，但别让它失衡；把过盛的精力，分一些给不足的领域。"},
+    zero:{v:"命中需留意：突如其来的官非或病痛。",r:"此格为零，你这一生要特别当心突发的法律纠纷或健康危机，往往来得猝不及防。",t:"凡事守法守约、白纸黑字；身体定期检查，把风险挡在发生之前。"},
+  },
+  { // 5 父母贵人 benchmark 3, zero rule
+    low:{v:"你是最孝顺的那个，却未必是最被宠的那个。",r:"父母面——你对父母格外孝顺、付出最多，但偏爱未必落在你身上。贵人面——未来助你成事的贵人较少，许多事得靠自己。",t:"孝心是你的福报，别计较偏爱；贵人不多，就把自己修炼成别人的贵人，路会越走越宽。"},
+    ideal:{v:"亲情与贵人，都恰如其分地围绕着你。",r:"父母面——你与父母的缘分平衡，既得疼爱也懂回报。贵人面——未来有适度的贵人相助，助你更上层楼。",t:"珍惜身边的善缘，懂得感恩，贵人运会越养越旺。"},
+    high:{v:"你是父母最疼的孩子，未来也贵人云集——但被宠不等于孝顺。",r:"父母面——兄弟姐妹中父母最偏爱你，但要警惕被宠出依赖。贵人面——未来贵人多，会助你赚更多钱、走得更高更远。",t:"被疼是福气，但别当作理所当然；多回报父母、善待贵人，福分才留得住。"},
+    zero:{v:"家庭与贵人，命中往往只能得其一。",r:"此格为零，你这一生在家庭温暖与贵人扶持之间常只能拥有一头——家庭缘厚则贵人稀，贵人多则亲缘较淡。",t:"接受命格的取舍，珍惜你拥有的那一头，缺的那一头就靠自己用心补足。"},
+  },
+];
+function boxState(count,bench,hasZero){
+  if(count===0&&hasZero)return "zero";
+  if(count<bench)return "low";
+  if(count>bench)return "high";
+  return "ideal";
+}
+const STATE_LABEL={low:"偏弱",ideal:"理想",high:"偏盛",zero:"特殊"};
+const STATE_CLR={low:"#e0993a",ideal:"#4caa6e",high:"#e07a5f",zero:"#a888d8"};
+
+/* ─── FORTUNE ENGINE (今日/流年) ─────────── */
+// Fortune reading per resulting number — grounded in the same 1-9 meanings
+const FORTUNE = {
+  1:{mood:"主导日",luck:78,money:"宜主动出击，机会握在自己手里",love:"以诚相待，别太强势",work:"适合拍板做决定、带头推进",tip:"今天你是主角，放手去做，但记得听人一言。",color:"金",lucky:1},
+  2:{mood:"沟通日",luck:72,money:"贵人在言谈间，多聊多得",love:"温柔倾听，关系升温",work:"宜协调、谈判、修复关系",tip:"今天靠嘴生财，好好说话，福气自来。",color:"蓝",lucky:2},
+  3:{mood:"行动日",luck:85,money:"看准就出手，财机稍纵即逝",love:"主动表达，热情有回报",work:"执行力爆棚，适合落地推进",tip:"机会就在眼前，别犹豫，动起来！",color:"红",lucky:3},
+  4:{mood:"筹谋日",luck:68,money:"稳中求进，忌冲动消费",love:"踏实陪伴胜过甜言蜜语",work:"宜规划、整理、打基础",tip:"今天适合沉下心做计划，别想太多，先动一步。",color:"绿",lucky:4},
+  5:{mood:"转运日",luck:80,money:"动则生财，外出有机遇",love:"给彼此空间，自由中见真心",work:"适合开拓、变动、谈新局",tip:"今天驿马星动，走出去，新机会在路上。",color:"黄",lucky:5},
+  6:{mood:"聚财日",luck:82,money:"财气旺，但守财比赚钱更重要",love:"照顾家人，温暖加分",work:"宜处理钱财、合约、家务事",tip:"今天财来得顺，记得守住，别大手大脚。",color:"金",lucky:6},
+  7:{mood:"贵人日",luck:88,money:"人脉即财脉，多与人连接",love:"理性沟通，别想太多",work:"宜请教高人、拓展人脉",tip:"今天贵人运强，主动开口，有人愿意帮你。",color:"蓝",lucky:7},
+  8:{mood:"承压日",luck:65,money:"压力中藏机会，扛住就是你的",love:"放下掌控，柔软一点",work:"宜承担重任、统筹大局",tip:"今天担子重，稳住心态，撑过去格局更大。",color:"红",lucky:8},
+  9:{mood:"圆满日",luck:90,money:"心想事成，收获前期努力",love:"包容大度，关系圆满",work:"宜收尾、结案、争取认可",tip:"今天是结果日，把手上的事漂亮收尾，会有好回报。",color:"绿",lucky:9},
+};
+
+function dateNum(d){ // reduce a full date to 1-9
+  const s=`${d.getFullYear()}${d.getMonth()+1}${d.getDate()}`;
+  return red(s.split("").reduce((a,b)=>a+parseInt(b),0));
+}
+function yearNum(y){ return red(String(y).split("").reduce((a,b)=>a+parseInt(b),0)); }
+
+function getDailyFortune(G){
+  const today=new Date();
+  const dn=dateNum(today);
+  const combined=red(dn+G); // user core × today
+  return {num:combined, dateStr:`${today.getFullYear()}/${String(today.getMonth()+1).padStart(2,"0")}/${String(today.getDate()).padStart(2,"0")}`, dayNum:dn, ...FORTUNE[combined]};
+}
+function getYearFortune(G,year){
+  const yn=yearNum(year);
+  const combined=red(yn+G);
+  return {num:combined, year, yearNum:yn, ...FORTUNE[combined]};
+}
+
+/* ── Missing Number Bar ── */
+function MissingBar({missing}){
+  return(
+    <div style={{marginTop:14,padding:"12px 14px",borderRadius:10,
+      background:T.card,border:`1px solid ${T.borderG}`,display:"flex",alignItems:"center",gap:12}}>
+      <div>
+        <div style={{color:T.textSub,fontSize:11}}>缺失数字</div>
+        <div style={{color:T.textDim,fontSize:9}}>Missing Number</div>
+      </div>
+      <div style={{flex:1,padding:"10px 14px",borderRadius:8,
+        background:T.cardAlt,border:`1px solid ${T.border}`,
+        color:T.text,fontSize:18,fontFamily:"Georgia,serif",letterSpacing:8,fontWeight:700}}>
+        {missing.length?missing.join("  "):"无缺失 ✦"}
+      </div>
+    </div>
+  );
+}
+
+/* ── Number Reference Card ── */
+const NC=["","#e8734a","#6aaccc","#e0993a","#7dbf7a","#a888d8","#e8c84a","#6aaccc","#e07a5f","#c9a84c"];
+function NumRefCard({n,hasIt,isMissing}){
+  const d=ND[n],clr=NC[n];
+  const [open,setOpen]=useState(false);
+  return(
+    <div style={{borderRadius:12,marginBottom:8,border:`1px solid ${hasIt?clr+"55":T.border}`,overflow:"hidden",opacity:isMissing?0.75:1}}>
+      {/* Header row */}
+      <div onClick={()=>setOpen(!open)} style={{
+        display:"flex",alignItems:"center",gap:12,padding:"12px 14px",cursor:"pointer",
+        background:hasIt?`${clr}18`:T.card,
+      }}>
+        <div style={{width:38,height:38,borderRadius:"50%",flexShrink:0,
+          background:hasIt?`radial-gradient(circle at 35% 30%,${clr}ee,${clr}77)`:"#2a2015",
+          border:`2px solid ${hasIt?clr:T.border}`,
+          display:"flex",alignItems:"center",justifyContent:"center",
+          color:hasIt?"#fff":T.textDim,fontSize:18,fontFamily:"Georgia,serif",fontWeight:700}}>{n}</div>
+        <div style={{flex:1}}>
+          <div style={{display:"flex",alignItems:"center",gap:6,flexWrap:"wrap"}}>
+            <span style={{color:T.goldLt,fontSize:13,fontWeight:700}}>{d.title}</span>
+            {isMissing&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:10,
+              background:"#2a2015",color:T.amber,border:`1px solid ${T.amber}44`}}>缺失待培养</span>}
+            {hasIt&&!isMissing&&<span style={{fontSize:9,padding:"2px 7px",borderRadius:10,
+              background:`${clr}22`,color:clr,border:`1px solid ${clr}44`}}>已具备</span>}
+          </div>
+          <div style={{color:clr,fontSize:10,marginTop:2,fontStyle:"italic"}}>{d.tag}</div>
+        </div>
+        <div style={{color:T.textDim,fontSize:12}}>{open?"▲":"▼"}</div>
+      </div>
+
+      {/* Expanded content */}
+      {open&&(
+        <div style={{padding:"0 14px 14px",background:T.card}}>
+          <div style={{height:1,background:T.borderG,margin:"0 0 12px"}}/>
+
+          {/* Verdict - master's reading */}
+          <div style={{padding:"10px 12px",borderRadius:8,marginBottom:12,
+            background:`${T.gold}0d`,border:`1px solid ${T.gold}33`}}>
+            <div style={{color:T.gold,fontSize:10,letterSpacing:2,marginBottom:4}}>◈ 断语</div>
+            <div style={{color:T.goldLt,fontSize:13,lineHeight:1.7,fontStyle:"italic"}}>{d.verdict}</div>
+          </div>
+
+          <Row icon="✦" label="天赋" clr={T.green} text={d.pos}/>
+          <Row icon="◈" label="隐患" clr={T.red} text={d.neg}/>
+          <Row icon="☷" label="宜行之业" clr={T.blue} text={d.career}/>
+          <Row icon="❡" label="情感" clr="#e87ab0" text={d.emotion}/>
+          <Row icon="☯" label="点拨" clr={T.amber} text={d.lesson}/>
+          {isMissing&&<Row icon="○" label="缺失之象" clr={T.amber} text={d.miss}/>}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Row({icon,label,clr,text}){
+  return(
+    <div style={{display:"flex",gap:8,marginBottom:8,alignItems:"flex-start"}}>
+      <span style={{fontSize:13,flexShrink:0}}>{icon}</span>
+      <div style={{flex:1}}>
+        <span style={{color:clr,fontSize:10,fontWeight:700,marginRight:6}}>{label}</span>
+        <span style={{color:T.text,fontSize:12,lineHeight:1.6}}>{text}</span>
+      </div>
+    </div>
+  );
+}
+
+/* ── Five Elements: master-style life-area cards ── */
+function FiveTable({vars}){
+  const mainEl=EL_MAP[vars.G]||"木";
+  const boxes=getFiveBoxes(mainEl,vars);
+  return(
+    <div>
+      <div style={{color:T.textSub,fontSize:11,marginBottom:6,textAlign:"center"}}>
+        主元素：<span style={{color:EL_CLR[mainEl],fontWeight:700}}>{mainEl} ({EL_EN[mainEl]})</span>
+      </div>
+      <div style={{color:T.textDim,fontSize:10,marginBottom:16,textAlign:"center",lineHeight:1.6,
+        padding:"0 10px"}}>
+        五行能量分布于人生五大领域，过盛与不足皆需留意。<br/>以下是属于你的命格解读。
+      </div>
+      {boxes.map((b,i)=>{
+        const meta=BOX_META[i], bench=BOX_BENCH[i];
+        const hasZero=!!BOX_CONTENT[i].zero;
+        const st=boxState(b.count,bench,hasZero);
+        const c=BOX_CONTENT[i][st];
+        const sc=STATE_CLR[st];
+        const elc=EL_CLR[b.el];
+        return(
+          <div key={i} style={{marginBottom:14,borderRadius:14,overflow:"hidden",
+            background:T.card,border:`1px solid ${T.borderG}`}}>
+            {/* header */}
+            <div style={{display:"flex",alignItems:"center",gap:10,padding:"12px 14px",
+              background:`linear-gradient(135deg,${elc}1a,${T.card})`,
+              borderBottom:`1px solid ${T.border}`}}>
+              <div style={{width:34,height:34,borderRadius:9,flexShrink:0,
+                background:`${elc}22`,border:`1px solid ${elc}55`,
+                display:"flex",alignItems:"center",justifyContent:"center",
+                color:elc,fontSize:17,fontWeight:700}}>{b.el}</div>
+              <div style={{flex:1}}>
+                <div style={{color:T.text,fontSize:14,fontWeight:700}}>{meta.name}</div>
+                <div style={{color:T.textDim,fontSize:9,letterSpacing:0.5}}>{meta.term}</div>
+              </div>
+              <span style={{fontSize:10,fontWeight:700,padding:"4px 11px",borderRadius:20,
+                background:`${sc}1f`,color:sc,border:`1px solid ${sc}66`}}>{STATE_LABEL[st]}</span>
+            </div>
+            {/* body */}
+            <div style={{padding:"14px"}}>
+              <div style={{color:T.goldLt,fontSize:14,fontWeight:600,lineHeight:1.7,
+                marginBottom:12,fontStyle:"italic"}}>「{c.v}」</div>
+              <div style={{display:"flex",gap:8,marginBottom:10}}>
+                <span style={{fontSize:12,flexShrink:0}}>🔎</span>
+                <div style={{color:T.text,fontSize:12.5,lineHeight:1.7}}>{c.r}</div>
+              </div>
+              <div style={{display:"flex",gap:8,padding:"10px 12px",borderRadius:9,
+                background:`${T.amber}0d`,border:`1px solid ${T.amber}33`}}>
+                <span style={{fontSize:12,flexShrink:0}}>☯</span>
+                <div><span style={{color:T.amber,fontSize:10,fontWeight:700,marginRight:6}}>点拨</span>
+                  <span style={{color:T.text,fontSize:12.5,lineHeight:1.7}}>{c.t}</span></div>
+              </div>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+/* ── 13 Group Card ── */
+/* Combo reading engine: special named patterns + woven-sentence fallback */
+const DIGIT_ROLE={
+  1:{name:"开创者",trait:"独立果决、敢为人先"},
+  2:{name:"沟通者",trait:"能说会道、善解人意"},
+  3:{name:"行动者",trait:"执行力强、富有创意"},
+  4:{name:"规划者",trait:"务实稳健、布局长远"},
+  5:{name:"开拓者",trait:"口才出众、爱闯爱动"},
+  6:{name:"守护者",trait:"重情顾家、善于理财"},
+  7:{name:"洞察者",trait:"理性冷静、看得透彻"},
+  8:{name:"实干家",trait:"魄力十足、扛得起事"},
+  9:{name:"成事者",trait:"目光长远、终能收成"},
+};
+const AREA_OPEN={1:"在事业上",2:"在婚姻感情上",3:"就本性而言",4:"人生的前半段",
+  5:"人生的后半段",6:"在子女与下属的缘分上",7:"事业的前期",8:"事业的后期",
+  9:"此时此刻",10:"婚姻的前期",11:"婚姻的后期",12:"在未来、健康与姻亲方面"};
+// Special combos from master's teaching. Keyed by exact sequence; equivalent orders share a reading.
+const SPECIAL_COMBOS={
+  "112":{h:"直率自信 · 销售好手",b:"你自信、直接，说话不绕弯，是天生跑业务、谈买卖的料——敢开口，也敢成交。",w:"但你主导欲偏强，感情里若总要对方顺着你，容易生摩擦。赢了道理，别输了关系。"},
+  "123":{h:"能说能做 · 生意之才",b:"你口才与行动力兼具，做起销售、买卖得心应手，能说得动人，也做得成事。"},
+  "213":{h:"为人师表 · 传道授业",b:"你能言、有主见、又擅表达，是站上讲台的料——把道理讲清楚、让人听得进，天生适合教学、培训与演讲。"},
+  "134":{h:"果敢规划 · 心善重情",b:"你自信、有行动力、又懂布局，记性极佳；待人厚道，只是感情上较重情、易牵动心绪。"},
+  "314":{h:"行动谋略 · 谋定而动",b:"你行动力先行，配上自信与规划，做事雷厉风行；为人善良，感情上较易动情。"},
+  "145":{h:"自信谋略 · 能领众",b:"你自信、善谋划、有领导力，既敢拍板又有章法，天生带得动人。"},
+  "415":{h:"谋定后动 · 领袖之才",b:"你先谋而后动、稳中带攻，自信又有领导力，适合统筹大局、带队前行。"},
+  "156":{h:"驿马生财 · 海外有福",b:"你的财往往不在原地，越往外走、往海外发展，客户与机会越旺。",w:"若一直守在原地不动，恐怕只能发挥两三成的能量——走出去，才是你真正的财路。"},
+  "516":{h:"驿马生财 · 海外有福",b:"你的财往往不在原地，越往外走、往海外发展，客户与机会越旺；外面的世界，藏着你的福气。"},
+  "167":{h:"白手起家 · 从零到有",b:"你有开创的胆识、聚财的本事，也懂得节流储蓄，能看准方向、从无到有打下江山。不靠祖荫，也能挣出自己的一片天。"},
+  "617":{h:"白手起家 · 从零到有",b:"你慷慨大方却也懂得守财，能看准方向、从无到有打下江山。不靠祖荫，也能挣出自己的一片天。"},
+  "178":{h:"海外得财 · 谨记四戒",b:"你的财富机会多来自海外、远方，走出去比守在原地更容易发达；搭上长途的飞机，更能转动你的运势。",w:"但此命有四戒，犯之不仅自己破财招衰，也会连累对方——不借车、不轻易许诺、不替人作担保、不借钱予人。守住四戒，财路才稳。"},
+  "718":{h:"海外得财 · 远方有福",b:"你的财与运多在远方、海外；越是走出去闯荡，福气越旺。"},
+  "189":{h:"独当一面 · 能见成果",b:"你独立、能扛、责任感强，凡事亲力亲为、有始有终，是老板最放心的那种人——交到你手上的事，看得见结果。只是略有完美主义，凡事要求亲手做到位。"},
+  "819":{h:"独当一面 · 好员工",b:"你独立可靠、责任感强，做事有始有终，是任何团队都想留住的好员工。"},
+  "191":{h:"天生领袖 · 适合带头",b:"你主导力与格局兼具，天生适合带队、做主、扛起大旗。",w:"但你需要属于自己的空间；让另一半理解这份对独处的需要，感情会更长久。"},
+  "911":{h:"天生领袖 · 格局先行",b:"你看得远、也带得动人，天生是带头做主的料。",w:"但你需要属于自己的空间；让另一半理解这份对独处的需要，感情会更长久。"},
+  "224":{h:"能言善道 · 藏不住话",b:"你口才出众、又懂规划，是天生的沟通好手；只是心直口快、藏不住秘密，说话前不妨多想一步。"},
+  "235":{h:"能言善道 · 销售演说",b:"你能说、敢做、目标清晰，是天生的销售与演说好手，开口就能带动气氛、说服人心。"},
+  "325":{h:"行动健谈 · 销售演说",b:"你行动力先行，配上口才与清晰的目标，是天生的销售与演说好手，说服力十足。"},
+  "246":{h:"带财格局 · 逢势生财",b:"你天生带着财气；只要配上那股行动与创造的能量去催动，机会便能化成实实在在的财富。"},
+  "426":{h:"带财格局 · 逢势生财",b:"你命中带财；一旦动起来、敢去闯，财富的大门便会为你打开。"},
+  "268":{h:"销售之才 · 以言生财",b:"你天生适合做销售，能说动人、也盯得住成交，靠一张嘴和一股拼劲把钱赚进来。"},
+  "628":{h:"销售之才 · 以言生财",b:"你天生适合做销售，财气与口才兼具，靠一股拼劲把钱赚进口袋。"},
+  "279":{h:"桃花人缘 · 异性缘旺",b:"你桃花旺、人缘佳，走到哪都讨人喜欢，尤其得年轻、活泼一辈的缘分。"},
+  "729":{h:"桃花人缘 · 魅力成熟",b:"你桃花旺、人缘佳，魅力沉稳，尤其得年长、成熟一辈的青睐。"},
+  "281":{h:"销售强手 · 天生业务",b:"你具备很强的销售特质，能说服、能成交，天生适合靠业绩与口才打天下。"},
+  "292":{h:"军师顾问 · 固执须试水",b:"你适合担任军师、顾问，眼光独到、出谋划策是强项；只是个性较固执，凡事最好先试探、再下手。"},
+  "336":{h:"行动生财 · 须脚踏实地",b:"你行动力强、又带财气，做事积极进取。",w:"但你必须脚踏实地，切忌投机赌博——一沾赌，财去得比来得快。"},
+  "347":{h:"万人迷 · 魅力四射",b:"你天生带着吸引人的魅力，走到哪都讨人喜欢，是名副其实的万人迷。"},
+  "437":{h:"万人迷 · 魅力四射",b:"你天生人见人爱、魅力难挡，无论走到哪里都是焦点。"},
+  "358":{h:"勤恳踏实 · 好员工",b:"你勤奋肯干、踏实可靠，是任何团队都想留住的好员工。"},
+  "369":{h:"主动出击 · 机会在外",b:"你的机会不会自己上门，必须主动走出去寻找；越积极争取，路越宽。"},
+  "371":{h:"组建团队 · 掌权之才",b:"你善于组建团队、调度众人，天生带着一股掌权的气场。"},
+  "731":{h:"以人为本 · 重情重义",b:"你凡事把人放在第一位，重情重义，是难得的暖心领路人。"},
+  "382":{h:"销售好手 · 须稳情绪",b:"你销售能力强、敢冲敢拼，业绩往往出色。",w:"但你脾气偏急、容易上火——稳住情绪，才守得住人和财。"},
+  "832":{h:"实力派 · 须稳情绪",b:"你能力不俗、做事有劲。",w:"但你脾气偏急，容易因一时火气坏了大事——学会沉住气，路会顺得多。"},
+  "393":{h:"行动力强 · 凡事亲力亲为",b:"你行动力极强、看重结果；只是凡事爱亲自动手、不易放权，有时反而累了自己。学会信任与分工，会走得更轻松。"},
+  "448":{h:"深思熟虑 · 责任感重",b:"你凡事再三思量、深谋远虑，肩上的责任感也格外重，是值得托付的人。"},
+  "459":{h:"创业之才 · 谋定致胜",b:"你具备企业家的特质，思虑周全、目标明确，能想清楚再出手，终能把事做成。"},
+  "549":{h:"创业之才 · 远见成事",b:"你目光长远、思路清晰，是天生的创业料，谋定而后动，终能成事。"},
+  "461":{h:"善理财务 · 守得住钱",b:"你天生懂得打理钱财、量入为出，财来得住、守得稳。"},
+  "641":{h:"善理财务 · 财源稳健",b:"你对钱财有天生的敏感与分寸，懂得让财源细水长流。"},
+  "472":{h:"平步青云 · 顺势而上",b:"你想得清楚、走得扎实、人际圆融，事业上往往一路顺遂、平步青云。"},
+  "742":{h:"平步青云 · 顺势而上",b:"你想得清楚、走得扎实、人际圆融，事业上往往一路顺遂、平步青云。"},
+  "483":{h:"专业立身 · 创业格局",b:"你靠专业本事立身，适合走专业路线或自立门户，是块创业的料。"},
+  "843":{h:"专业立身 · 自成一格",b:"你凭真本事吃饭，专业扎实，适合走专精路线或自己当家。"},
+  "494":{h:"多元收入 · 副业更旺",b:"你财路多元，往往不只一份收入；有时副业、兼职反而比正职赚得更多。"},
+  "551":{h:"天生领袖 · 忌过于固执",b:"你是天生的领导者，带得动人、扛得起事。",w:"但你个性偏固执，太钻牛角尖反而伤了自己——学会转弯，路会更宽。"},
+  "562":{h:"旺夫好命 · 尤利女性",b:"此为旺夫之数，尤其对女性而言，是带旺另一半、家庭和顺的好命格。"},
+  "652":{h:"旺家好命 · 和顺有福",b:"此为带旺家庭的好数，尤利女性，是家宅和顺、福气绵长的格局。"},
+  "573":{h:"结交高层 · 贵人层次高",b:"你容易结识高层次、有份量的人物，圈子越走越高，贵人也越来越有来头。"},
+  "584":{h:"企业家格局 · 思虑周密",b:"你具备企业家的格局，凡事想得深、算得远；只是思虑偏多，别让想太多绊住了脚步。"},
+  "595":{h:"大哥气场 · 须守分寸",b:"你带着一股大哥般的气场，号召力强、护得住人。",w:"只是行事有时游走在灰色地带，务必把握分寸、守住底线，才能行得稳、走得远。"},
+  "674":{h:"学习力强 · 求知上进",b:"你学习能力极强、求知欲旺盛，是越学越通、越通越旺的类型。"},
+  "685":{h:"公关高手 · 长袖善舞",b:"你天生擅长公关交际，长袖善舞、人脉广通，是社交场上的高手。"},
+  "696":{h:"祖荫得财 · 难得好命",b:"你有祖荫庇佑、财运不错，是难得的好命格，行事顺遂、福气绵长。"},
+  "966":{h:"祖荫得财 · 福气绵长",b:"你得祖辈福荫、财气不弱，是难得的好命格，根基稳、后福长。"},
+  "775":{h:"行善积福 · 化烦为顺",b:"此数提醒你多行善、积福德；若一味只顾自己，恐招来不少烦扰与是非。心存善念，路自然顺。"},
+  "786":{h:"桃花带财 · 缘分长久",b:"你带桃花、又带财，异性缘佳且能因缘生财；与人结缘往往细水长流、相知甚久。"},
+  "876":{h:"桃花带财 · 情深意长",b:"你魅力沉稳、带财带缘，感情上重情重义，缘分往往深厚而长久。"},
+  "797":{h:"实力出众 · 须懂人情",b:"你能力出众，但成败往往系于人情——懂得经营人际、体察人心，路才顺；只顾埋头硬干，容易事倍功半。"},
+  "977":{h:"实力出众 · 须懂人情",b:"你本事不小，但要记得：把人际处好，比埋头苦干更重要。懂人心，才走得远。"},
+  "887":{h:"火气偏旺 · 须稳情绪",b:"你性子里有股冲劲与火气，做事有魄力却容易急躁动怒。学会沉住气、稳住情绪，便能化冲劲为助力。"},
+  "898":{h:"靠己最稳 · 踏实为安",b:"你最稳妥的路，是靠自己一双手挣来的踏实。凡事亲力亲为、不假外求，反而走得安稳长远。"},
+  "988":{h:"靠己最稳 · 自立为本",b:"你的福气在自己手里——靠真本事、靠双手打拼，是你最踏实可靠的一条路。"},
+  "922":{h:"军师顾问 · 略显固执",b:"你适合担任军师、顾问，出谋划策是你的强项；只是个性较固执，多听几句不同的声音，会让你更上层楼。"},
+  "257":{h:"沟通远见 · 人脉生财",b:"你口才出众、眼光长远，善于连接不同的人与资源，人脉往往是你最大的财富。"},
+  "527":{h:"自信远见 · 开拓格局",b:"你自信、有目标、眼光独到，天生适合开拓新局面，走别人没走过的路。"},
+  "639":{h:"主动出击 · 贵人相随",b:"你的机会与贵人，从来不会自己上门——越主动、越积极，贵人越愿意帮你。"},
+  "663":{h:"双财聚力 · 守财为要",b:"你带着双份财气，财运旺盛；但财来得快，守财之道比赚钱更重要。"},
+  "753":{h:"深思远虑 · 须接地气",b:"你思路清晰、目标明确，想法往往超前；只是有时过于理想化，多接地气、踏实落地，才能把想法化为现实。"},
+  "764":{h:"洞察生财 · 贵人助力",b:"你眼光敏锐、财运稳健，身边总有贵人相伴；善用这份人缘，福气会越来越旺。"},
+  "821":{h:"实干领路 · 扛得起责",b:"你做事有魄力、敢担当，天生能扛起大旗、带领众人往前走。"},
+  "854":{h:"企业家格局 · 稳扎稳打",b:"你兼具魄力与规划力，格局大、落地稳，是天生适合创业、带团队的料。"},
+  "865":{h:"财运稳健 · 专业立身",b:"你财气稳、有专业底气，靠真本事立身，走得踏实长远。"},
+  "933":{h:"成事之人 · 行动双倍",b:"你以结果为导向，行动力极强、执行到位，交代给你的事，总能看见成果。"},
+  "944":{h:"远见规划 · 深谋成事",b:"你目光长远、思虑周密，善于把大计划一步步落地，是能把梦想变成现实的人。"},
+  "955":{h:"成事之人 · 目标清晰",b:"你目标感强、意志坚定，只要认定了方向，便能一路走到底、看见结果。"},
+  "999":{h:"一念之间 · 善恶由心",b:"此为极数，威力极大——一念天堂，一念地狱。你存善念、行善事，福报便随之而来；起恶念、走偏路，反噬也同样强烈。你这一生的好坏，握在自己每一个起心动念里。"},
+};
+function comboReading(group){
+  const nums=group.nums;
+  const key=nums.join("");
+  const sp=SPECIAL_COMBOS[key];
+  if(sp)return {headline:sp.h, body:sp.b, warn:sp.w||null, special:true};
+  // woven fallback — lead digit dominant, no digits shown
+  const [a,b,c]=nums;
+  const open=AREA_OPEN[group.id]||"在这方面";
+  const uniq=[...new Set(nums)];
+  let body=`${open}，你以「${DIGIT_ROLE[a]?.name}」的特质为主轴——${DIGIT_ROLE[a]?.trait}`;
+  if(b!==a||c!==a){
+    const sup=[b,c].filter(n=>n!==a).map(n=>DIGIT_ROLE[n]?.trait);
+    if(sup.length)body+=`，再揉合${sup.join("、")}的力量`;
+  }
+  body+="。";
+  if(uniq.length===1)body+="这股特质在你身上汇聚成极强的力量，近乎极致。";
+  else if(nums.length-uniq.length===1)body+="其中有一股力量重复出现，在你身上会被明显放大。";
+  return {headline:`${DIGIT_ROLE[a]?.name}主导 · 三才交织`, body, warn:null, special:false};
+}
+
+function GroupCard({group,idx,show,locked}){
+  const flags=getFlags(group.nums);
+  const reading=group.is13?null:comboReading(group);
+  const missNums=group.is13?[]:[1,2,3,4,5,6,7,8,9].filter(n=>!group.nums.includes(n));
+  const missTexts=missNums.map(n=>ND[n]?.miss).filter(Boolean);
+
+  return(
+    <div style={{opacity:show?1:0,transform:show?"translateY(0)":"translateY(14px)",
+      transition:`opacity 0.4s ease ${idx*0.05}s, transform 0.4s ease ${idx*0.05}s`,
+      marginBottom:10,position:"relative"}}>
+      <div style={{display:"flex",alignItems:"center",gap:8,padding:"12px 14px",
+        background:"linear-gradient(135deg,#1e5588,#1a3a66)",borderRadius:"12px 12px 0 0"}}>
+        <span style={{color:"#fff",fontSize:13,fontWeight:700,flex:1}}>
+          {group.id}. {group.zh}
+        </span>
+      </div>
+      <div style={{padding:"12px 14px",background:T.card,borderRadius:"0 0 12px 12px",
+        border:`1px solid #1e5588`,borderTop:"none",position:"relative",overflow:"hidden"}}>
+        {locked&&(
+          <div style={{position:"absolute",inset:0,borderRadius:"0 0 12px 12px",
+            background:"rgba(10,7,5,0.92)",backdropFilter:"blur(4px)",
+            display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",zIndex:10}}>
+            <div style={{fontSize:24}}>🔒</div>
+            <div style={{color:T.gold,fontSize:11,marginTop:6}}>Premium · 升级解锁</div>
+          </div>
+        )}
+        {flags.length>0&&(
+          <div style={{display:"flex",flexWrap:"wrap",gap:5,marginBottom:8}}>
+            {flags.map((f,i)=>(
+              <span key={i} style={{fontSize:10,padding:"2px 8px",borderRadius:20,
+                border:`1px solid ${f.clr}55`,color:f.clr,background:`${f.clr}11`}}>{f.label}</span>
+            ))}
+          </div>
+        )}
+        {group.is13?(
+          <div>
+            <div style={{color:T.textDim,fontSize:11,marginBottom:10,lineHeight:1.6,
+              padding:"8px 10px",borderRadius:8,background:`${T.blue}11`,border:`1px solid ${T.blue}33`}}>
+              潜藏在你性格深处、连自己也未必察觉的能量。
+            </div>
+            {group.nums.map((n,i)=>(
+              <div key={i} style={{marginBottom:i<group.nums.length-1?12:0,
+                paddingBottom:i<group.nums.length-1?12:0,
+                borderBottom:i<group.nums.length-1?`1px solid ${T.border}`:"none"}}>
+                <div style={{display:"flex",alignItems:"center",gap:6,marginBottom:4}}>
+                  <div style={{width:22,height:22,borderRadius:"50%",
+                    background:`radial-gradient(circle at 35% 30%,#f5e090,#c9a84c,#5a4418)`,
+                    display:"flex",alignItems:"center",justifyContent:"center",
+                    color:"#1a0e00",fontSize:12,fontWeight:700,fontFamily:"Georgia,serif"}}>{n}</div>
+                  <span style={{color:T.goldLt,fontSize:12,fontWeight:600}}>{ND[n]?.title?.split(" · ")[1]||ND[n]?.tag}</span>
+                </div>
+                <div style={{color:T.green,fontSize:12,marginBottom:2,lineHeight:1.6}}>✦ {ND[n]?.pos}</div>
+                <div style={{color:T.red,fontSize:12,lineHeight:1.6}}>◈ {ND[n]?.neg}</div>
+              </div>
+            ))}
+          </div>
+        ):(
+          <div>
+            <div style={{color:T.goldLt,fontSize:14,fontWeight:700,marginBottom:8}}>
+              {reading.headline}
+            </div>
+            <div style={{color:T.text,fontSize:13,lineHeight:1.8}}>{reading.body}</div>
+            {reading.warn&&(
+              <div style={{display:"flex",gap:8,marginTop:12,padding:"10px 12px",borderRadius:9,
+                background:`${T.red}11`,border:`1px solid ${T.red}44`}}>
+                <span style={{fontSize:13,flexShrink:0}}>⚠️</span>
+                <div><span style={{color:T.red,fontSize:10,fontWeight:700,marginRight:6}}>提醒</span>
+                  <span style={{color:T.text,fontSize:12.5,lineHeight:1.7}}>{reading.warn}</span></div>
+              </div>
+            )}
+            {missTexts.length>0&&(
+              <div style={{color:T.amber,fontSize:11,lineHeight:1.7,marginTop:12,
+                paddingTop:10,borderTop:`1px solid ${T.border}`}}>
+                🔍 缺失提醒：{missTexts.join(" ｜ ")}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* ══════════════════════════════════════════ */
+/*  PAGES                                    */
+/* ══════════════════════════════════════════ */
+
+function HomePage({onStart}){
+  return(
+    <div style={{minHeight:"100vh",background:T.bg,display:"flex",flexDirection:"column",
+      alignItems:"center",justifyContent:"center",padding:"40px 20px",
+      fontFamily:"'Noto Serif SC',serif"}}>
+      <style>{FONT_CSS}</style>
+      <div style={{position:"fixed",inset:0,opacity:0.03,pointerEvents:"none",
+        backgroundImage:`repeating-linear-gradient(0deg,${T.gold} 0,${T.gold} 1px,transparent 1px,transparent 56px),repeating-linear-gradient(90deg,${T.gold} 0,${T.gold} 1px,transparent 1px,transparent 56px)`}}/>
+      <div style={{maxWidth:400,width:"100%",textAlign:"center",position:"relative"}}>
+        <div style={{display:"flex",flexDirection:"column",gap:5,alignItems:"center",marginBottom:28}}>
+          {[1,0,1,1,0,1].map((s,i)=>(
+            <div key={i} style={{display:"flex",gap:6}}>
+              {s?<div style={{width:44,height:4,background:T.gold,borderRadius:2,boxShadow:`0 0 8px ${T.goldGl}`}}/>:
+                <div style={{display:"flex",gap:6}}><div style={{width:17,height:4,background:T.gold,borderRadius:2}}/><div style={{width:17,height:4,background:T.gold,borderRadius:2}}/></div>}
+            </div>
+          ))}
+        </div>
+        <div style={{fontFamily:"'Cinzel',serif",fontSize:10,letterSpacing:6,color:T.goldDk,marginBottom:8}}>I CHING NUMEROLOGY</div>
+        <h1 style={{fontSize:58,fontWeight:300,color:T.goldLt,letterSpacing:10,lineHeight:1,marginBottom:8}}>命數</h1>
+        <div style={{fontSize:12,color:T.textDim,letterSpacing:3,marginBottom:36}}>Ming Shu · 13组合数字命理</div>
+        <div style={{padding:"20px",borderRadius:14,border:`1px solid ${T.borderG}`,background:`${T.card}99`,marginBottom:32}}>
+          <p style={{color:T.text,fontSize:14,lineHeight:1.9}}>
+            透过生日，解读你的<span style={{color:T.gold}}>13组命理组合</span>、
+            <span style={{color:T.goldLt}}>五行能量</span>与<span style={{color:T.goldLt}}>命理矩阵</span>。
+          </p>
+        </div>
+        <button onClick={onStart} style={{width:"100%",padding:"17px",borderRadius:12,
+          background:`linear-gradient(135deg,${T.goldDk},${T.gold},${T.goldLt})`,
+          border:"none",cursor:"pointer",fontSize:16,fontWeight:700,
+          color:"#0a0700",letterSpacing:3,fontFamily:"'Noto Serif SC',serif",
+          boxShadow:`0 4px 24px ${T.goldGl}`}}>开始分析 →</button>
+      </div>
+    </div>
+  );
+}
+
+const STEPS=["解析生命数字...","对照易经矩阵...","计算13组合...","生成命理报告..."];
+
+function InputPage({onBack,onResult}){
+  const[f,setF]=useState({day:"",month:"",cent:"",yr:""});
+  const[loading,setLoading]=useState(false);
+  const[step,setStep]=useState(0);
+  const ready=f.day&&f.month&&f.cent&&f.yr;
+
+  function go(){
+    if(!ready)return;
+    setLoading(true);setStep(0);
+    let s=0;
+    const iv=setInterval(()=>{s++;setStep(s);
+      if(s>=STEPS.length){clearInterval(iv);
+        setTimeout(()=>{
+          const vars=calcVars(+f.day,+f.month,+f.cent,+f.yr);
+          onResult({vars,groups:makeGroups(vars),missing:getMissing(vars)});
+          setLoading(false);
+        },300);
+      }
+    },600);
+  }
+
+  const iS={background:"#1a1510",border:`1px solid ${T.borderG}`,borderRadius:10,
+    color:T.text,fontSize:20,fontWeight:700,padding:"14px 8px",
+    width:"100%",outline:"none",fontFamily:"Georgia,serif",textAlign:"center"};
+
+  return(
+    <div style={{minHeight:"100vh",background:T.bg,padding:"36px 20px",
+      fontFamily:"'Noto Serif SC',serif",maxWidth:430,margin:"0 auto"}}>
+      <style>{FONT_CSS}</style>
+      <button onClick={onBack} style={{background:"none",border:"none",
+        color:T.textDim,cursor:"pointer",fontSize:12,marginBottom:28,padding:0}}>← 返回</button>
+      <h2 style={{color:T.text,fontSize:22,fontWeight:300,letterSpacing:2,marginBottom:24}}>输入生日</h2>
+      <div style={{display:"grid",gridTemplateColumns:"1fr 1fr 1fr 1fr",gap:10,marginBottom:24}}>
+        {[["日 Date","day","16"],["月 Month","month","04"],["世纪 Century","cent","19"],["年 Year","yr","81"]].map(([lbl,k,ph])=>(
+          <div key={k}>
+            <label style={{color:T.textDim,fontSize:9,display:"block",marginBottom:6}}>{lbl}</label>
+            <input style={iS} type="number" value={f[k]}
+              onChange={e=>setF(p=>({...p,[k]:e.target.value}))} placeholder={ph}/>
+          </div>
+        ))}
+      </div>
+      <div style={{marginBottom:24,padding:"10px 14px",borderRadius:10,background:T.card,border:`1px solid ${T.borderG}`}}>
+        <div style={{color:T.textDim,fontSize:10}}>例：16/04/1981 → 日=16 月=04 世纪=19 年=81</div>
+      </div>
+      {loading?(
+        <div style={{textAlign:"center",padding:32}}>
+          <div style={{fontSize:36,display:"inline-block",animation:"spin 3s linear infinite"}}>☯</div>
+          <style>{"@keyframes spin{to{transform:rotate(360deg)}}"}</style>
+          <div style={{color:T.gold,fontSize:13,letterSpacing:2,marginTop:14}}>
+            {STEPS[Math.min(step,STEPS.length-1)]}</div>
+        </div>
+      ):(
+        <button onClick={go} style={{width:"100%",padding:"17px",borderRadius:12,
+          background:ready?`linear-gradient(135deg,${T.goldDk},${T.gold})`:T.card,
+          border:`1px solid ${ready?T.gold:T.border}`,
+          cursor:ready?"pointer":"not-allowed",fontSize:15,fontWeight:700,
+          color:ready?"#0a0700":T.textDim,letterSpacing:2,
+          fontFamily:"'Noto Serif SC',serif"}}>生成命理报告</button>
+      )}
+    </div>
+  );
+}
+
+/* ── Fortune Tab (今日 + 流年) ── */
+function Gauge({value,color}){
+  const r=34, circ=2*Math.PI*r, off=circ*(1-value/100);
+  return(
+    <svg width="84" height="84" viewBox="0 0 84 84">
+      <circle cx="42" cy="42" r={r} fill="none" stroke="#2a2015" strokeWidth="6"/>
+      <circle cx="42" cy="42" r={r} fill="none" stroke={color} strokeWidth="6"
+        strokeDasharray={circ} strokeDashoffset={off} strokeLinecap="round"
+        transform="rotate(-90 42 42)"/>
+      <text x="42" y="40" textAnchor="middle" fill={color} fontSize="22"
+        fontFamily="Georgia,serif" fontWeight="700">{value}</text>
+      <text x="42" y="56" textAnchor="middle" fill="#8a7a60" fontSize="9">运势</text>
+    </svg>
+  );
+}
+
+function FortuneTab({vars,show,paid,onUpgrade}){
+  const [mode,setMode]=useState("day"); // day | year
+  const daily=getDailyFortune(vars.G);
+  const year=getYearFortune(vars.G, new Date().getFullYear());
+  const yearLocked = mode==="year" && !paid;
+  const f=mode==="day"?daily:year;
+  const luckClr=f.luck>=80?T.green:f.luck>=70?T.gold:T.amber;
+
+  const Line=({icon,label,text})=>(
+    <div style={{display:"flex",gap:10,padding:"12px 0",borderBottom:`1px solid ${T.border}`}}>
+      <span style={{fontSize:16,flexShrink:0}}>{icon}</span>
+      <div>
+        <div style={{color:T.textDim,fontSize:10,marginBottom:2}}>{label}</div>
+        <div style={{color:T.text,fontSize:13,lineHeight:1.6}}>{text}</div>
+      </div>
+    </div>
+  );
+
+  return(
+    <div style={{opacity:show?1:0,transform:show?"none":"translateY(14px)",
+      transition:"opacity 0.4s,transform 0.4s"}}>
+      {/* Mode switch */}
+      <div style={{display:"flex",gap:6,marginBottom:16}}>
+        {[["day","今日运势"],["year",`${year.year} 流年`]].map(([m,lbl])=>(
+          <button key={m} onClick={()=>setMode(m)} style={{flex:1,padding:"11px",borderRadius:10,
+            background:mode===m?`linear-gradient(135deg,${T.goldDk},${T.gold})`:T.card,
+            border:`1px solid ${mode===m?T.gold:T.borderG}`,
+            color:mode===m?"#0a0700":T.textDim,fontSize:13,fontWeight:mode===m?700:400,
+            cursor:"pointer",fontFamily:"'Noto Serif SC',serif"}}>{lbl}</button>
+        ))}
+      </div>
+
+      {/* Hero card */}
+      <div style={{background:`linear-gradient(135deg,${T.card},#1c160a)`,
+        border:`1px solid ${T.gold}44`,borderRadius:18,padding:"22px 20px",marginBottom:14,
+        position:"relative",overflow:"hidden"}}>
+        <div style={{position:"absolute",top:-30,right:-30,width:120,height:120,borderRadius:"50%",
+          background:`${T.gold}08`,border:`1px solid ${T.gold}18`,pointerEvents:"none"}}/>
+        <div style={{display:"flex",alignItems:"center",gap:18}}>
+          <Gauge value={f.luck} color={luckClr}/>
+          <div style={{flex:1}}>
+            <div style={{color:T.textDim,fontSize:11,marginBottom:3}}>
+              {mode==="day"?daily.dateStr:`${year.year} 年`}
+            </div>
+            <div style={{color:T.goldLt,fontSize:22,fontWeight:700,marginBottom:4}}>{f.mood}</div>
+            <div style={{display:"flex",gap:8,flexWrap:"wrap"}}>
+              <span style={{fontSize:10,padding:"3px 10px",borderRadius:20,
+                background:`${T.gold}18`,border:`1px solid ${T.gold}44`,color:T.goldLt}}>
+                幸运数字 {f.lucky}
+              </span>
+              <span style={{fontSize:10,padding:"3px 10px",borderRadius:20,
+                background:`${T.gold}18`,border:`1px solid ${T.gold}44`,color:T.goldLt}}>
+                幸运色 {f.color}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div style={{marginTop:16,padding:"12px 14px",borderRadius:10,
+          background:`${T.gold}0d`,border:`1px solid ${T.gold}33`}}>
+          <div style={{color:T.goldLt,fontSize:13,lineHeight:1.7,fontStyle:"italic"}}>「{f.tip}」</div>
+        </div>
+      </div>
+
+      {/* Detail lines */}
+      <div style={{position:"relative",background:T.card,border:`1px solid ${T.borderG}`,borderRadius:14,padding:"6px 16px 14px"}}>
+        {yearLocked&&(
+          <div style={{position:"absolute",inset:0,borderRadius:14,zIndex:5,
+            background:"rgba(10,7,5,0.92)",backdropFilter:"blur(5px)",
+            display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:8,
+            cursor:"pointer"}} onClick={onUpgrade}>
+            <div style={{fontSize:26}}>🔒</div>
+            <div style={{color:T.goldLt,fontSize:14,fontWeight:600}}>解锁 {year.year} 完整流年</div>
+            <div style={{color:T.textDim,fontSize:11}}>逐月运势 · 财运姻缘走向</div>
+            <div style={{marginTop:8,padding:"8px 18px",borderRadius:20,
+              background:`linear-gradient(135deg,${T.goldDk},${T.gold})`,
+              color:"#0a0700",fontSize:12,fontWeight:700}}>7 天免费试用</div>
+          </div>
+        )}
+        <Line icon="💰" label="财运" text={f.money}/>
+        <Line icon="❤️" label="感情" text={f.love}/>
+        <Line icon="💼" label="事业" text={f.work}/>
+      </div>
+
+      {mode==="year"&&(
+        <div style={{marginTop:12,padding:"12px 14px",borderRadius:10,
+          background:T.card,border:`1px solid ${T.borderG}`,
+          color:T.textDim,fontSize:11,lineHeight:1.6,textAlign:"center"}}>
+          流年运势每年更新一次 · 下次更新 {year.year+1} 年元旦
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ── PAYWALL (persuasive subscription screen) ── */
+function Paywall({onClose,onSubscribe}){
+  const [plan,setPlan]=useState("year"); // year preselected (higher value)
+  const benefits=[
+    ["🔮","流年完整运势","全年12个月逐月详批，把握每一个转折"],
+    ["📅","今日运势深度版","每日财运/感情/事业详解 + 幸运指引"],
+    ["🗝️","13组合全解锁","含隐藏潜意识、未来走向、财富密码"],
+    ["💞","关系配对分析","与伴侣、家人、合伙人的契合度（即将推出）"],
+  ];
+  return(
+    <div style={{position:"fixed",inset:0,zIndex:200,background:"rgba(8,6,3,0.96)",
+      backdropFilter:"blur(8px)",overflowY:"auto",fontFamily:"'Noto Serif SC',serif"}}>
+      <div style={{maxWidth:430,margin:"0 auto",padding:"20px 18px 32px",minHeight:"100%"}}>
+        {/* Close */}
+        <div style={{display:"flex",justifyContent:"flex-end"}}>
+          <button onClick={onClose} style={{background:"none",border:"none",
+            color:T.textDim,fontSize:22,cursor:"pointer",padding:4}}>×</button>
+        </div>
+
+        {/* Hero */}
+        <div style={{textAlign:"center",marginBottom:24}}>
+          <div style={{fontSize:38,marginBottom:8}}>🔮</div>
+          <div style={{color:T.goldLt,fontSize:24,fontWeight:700,letterSpacing:1,marginBottom:8}}>
+            解锁你的完整命盘
+          </div>
+          <div style={{color:T.textSub,fontSize:13,lineHeight:1.7}}>
+            你已看到命格的轮廓——<br/>完整的财富、姻缘与流年走向，正等你揭晓
+          </div>
+        </div>
+
+        {/* Benefits */}
+        <div style={{background:T.card,border:`1px solid ${T.borderG}`,borderRadius:16,
+          padding:"8px 16px",marginBottom:20}}>
+          {benefits.map(([icon,title,desc],i)=>(
+            <div key={i} style={{display:"flex",gap:12,padding:"13px 0",
+              borderBottom:i<benefits.length-1?`1px solid ${T.border}`:"none"}}>
+              <span style={{fontSize:20,flexShrink:0}}>{icon}</span>
+              <div>
+                <div style={{color:T.text,fontSize:14,fontWeight:600,marginBottom:2}}>{title}</div>
+                <div style={{color:T.textDim,fontSize:11,lineHeight:1.5}}>{desc}</div>
+              </div>
+              <span style={{marginLeft:"auto",color:T.gold,fontSize:16,alignSelf:"center"}}>✓</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Plans */}
+        <div style={{display:"flex",flexDirection:"column",gap:10,marginBottom:18}}>
+          {/* Annual */}
+          <button onClick={()=>setPlan("year")} style={{position:"relative",textAlign:"left",
+            padding:"16px 18px",borderRadius:14,cursor:"pointer",
+            background:plan==="year"?`linear-gradient(135deg,#1f1708,#13100b)`:T.card,
+            border:`2px solid ${plan==="year"?T.gold:T.borderG}`}}>
+            <div style={{position:"absolute",top:-10,right:14,background:`linear-gradient(135deg,${T.gold},${T.goldLt})`,
+              color:"#0a0700",fontSize:10,fontWeight:700,padding:"3px 10px",borderRadius:20}}>
+              最划算 · 省 44%
+            </div>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <div>
+                <div style={{color:T.text,fontSize:15,fontWeight:700}}>年度方案</div>
+                <div style={{color:T.textDim,fontSize:11,marginTop:2}}>每月仅 RM 16.6 · 一次省一年</div>
+              </div>
+              <div style={{textAlign:"right"}}>
+                <div style={{color:T.goldLt,fontSize:20,fontWeight:700}}>RM 199</div>
+                <div style={{color:T.textDim,fontSize:10,textDecoration:"line-through"}}>RM 358</div>
+              </div>
+            </div>
+          </button>
+          {/* Monthly */}
+          <button onClick={()=>setPlan("month")} style={{textAlign:"left",
+            padding:"16px 18px",borderRadius:14,cursor:"pointer",
+            background:plan==="month"?`linear-gradient(135deg,#1f1708,#13100b)`:T.card,
+            border:`2px solid ${plan==="month"?T.gold:T.borderG}`}}>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+              <div>
+                <div style={{color:T.text,fontSize:15,fontWeight:700}}>月度方案</div>
+                <div style={{color:T.textDim,fontSize:11,marginTop:2}}>灵活订阅，随时取消</div>
+              </div>
+              <div style={{color:T.goldLt,fontSize:20,fontWeight:700}}>RM 29.90</div>
+            </div>
+          </button>
+        </div>
+
+        {/* CTA */}
+        <button onClick={onSubscribe} style={{width:"100%",padding:17,borderRadius:13,
+          background:`linear-gradient(135deg,${T.goldDk},${T.gold},${T.goldLt})`,
+          border:"none",cursor:"pointer",fontSize:16,fontWeight:700,color:"#0a0700",
+          fontFamily:"'Noto Serif SC',serif",boxShadow:`0 4px 24px ${T.goldGl}`}}>
+          开启 7 天免费试用
+        </button>
+        <div style={{textAlign:"center",color:T.textDim,fontSize:11,marginTop:10,lineHeight:1.6}}>
+          试用期内免费 · 到期前可随时取消<br/>
+          {plan==="year"?"试用结束后 RM199/年":"试用结束后 RM29.90/月"} · 通过 App Store / Google Play 计费
+        </div>
+
+        {/* Social proof */}
+        <div style={{marginTop:20,padding:"14px",borderRadius:12,background:T.card,
+          border:`1px solid ${T.borderG}`,textAlign:"center"}}>
+          <div style={{color:T.gold,fontSize:14,marginBottom:4}}>★★★★★</div>
+          <div style={{color:T.textSub,fontSize:12,lineHeight:1.6,fontStyle:"italic"}}>
+            「流年批得很准，年初看了一整年都在应验」
+          </div>
+          <div style={{color:T.textDim,fontSize:10,marginTop:6}}>— 已有数万人解锁完整命盘</div>
+        </div>
+
+        {/* Legal */}
+        <div style={{marginTop:18,textAlign:"center"}}>
+          <div style={{display:"flex",justifyContent:"center",gap:16,marginBottom:8}}>
+            <span style={{color:T.textDim,fontSize:10,cursor:"pointer",textDecoration:"underline"}}>恢复购买</span>
+            <span style={{color:T.textDim,fontSize:10,cursor:"pointer",textDecoration:"underline"}}>服务条款</span>
+            <span style={{color:T.textDim,fontSize:10,cursor:"pointer",textDecoration:"underline"}}>隐私政策</span>
+          </div>
+          <div style={{color:T.textDim,fontSize:9,lineHeight:1.5}}>
+            订阅会自动续期，除非在当期结束前至少24小时取消。<br/>本应用结果仅供娱乐参考。
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const TABS=["今日/流年","命格概览","数字特质","五行","13组合"];
+
+function ReportPage({data,onBack}){
+  const[tab,setTab]=useState(0);
+  const[show,setShow]=useState(false);
+  const[paid,setPaid]=useState(false);
+  const[showPaywall,setShowPaywall]=useState(false);
+  useEffect(()=>{setTimeout(()=>setShow(true),80);},[]);
+
+  const{vars,groups,missing}=data;
+  const allNums=Object.values(vars);
+
+  return(
+    <div style={{minHeight:"100vh",background:T.bg,fontFamily:"'Noto Serif SC',serif"}}>
+      <style>{FONT_CSS}</style>
+      {/* Header */}
+      <div style={{position:"sticky",top:0,zIndex:50,background:`${T.bg}f0`,backdropFilter:"blur(12px)",
+        borderBottom:`1px solid ${T.borderG}`,padding:"14px 16px",
+        display:"flex",alignItems:"center",justifyContent:"space-between"}}>
+        <button onClick={onBack} style={{background:"none",border:"none",
+          color:T.textDim,cursor:"pointer",fontSize:11,padding:0}}>← 返回</button>
+        <span style={{color:T.gold,fontFamily:"'Cinzel',serif",fontSize:11,letterSpacing:3}}>命數报告</span>
+        <span style={{fontSize:10,color:T.textDim}}>—</span>
+      </div>
+
+      <div style={{padding:"16px",maxWidth:430,margin:"0 auto"}}>
+        {/* Profile */}
+        <div style={{background:`linear-gradient(135deg,${T.card},#1c160a)`,
+          border:`1px solid ${T.gold}44`,borderRadius:18,padding:"24px 20px",marginBottom:16,
+          textAlign:"center",position:"relative",overflow:"hidden"}}>
+          <div style={{position:"absolute",top:-40,right:-40,width:140,height:140,
+            borderRadius:"50%",background:`${T.gold}08`,border:`1px solid ${T.gold}18`,pointerEvents:"none"}}/>
+          <div style={{color:T.textDim,fontSize:10,letterSpacing:4,marginBottom:8}}>主 性 格</div>
+          <div style={{color:T.goldLt,fontSize:34,fontWeight:700,letterSpacing:8,
+            fontFamily:"Georgia,serif",marginBottom:6}}>{vars.C} · {vars.F} · {vars.G}</div>
+          <div style={{color:T.gold,fontSize:15,fontWeight:600}}>
+            {ND[vars.G]?.title}
+          </div>
+          <div style={{color:T.textSub,fontSize:11,marginTop:4,fontStyle:"italic"}}>
+            {ND[vars.G]?.tag}
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div style={{display:"flex",gap:5,marginBottom:16,overflowX:"auto",paddingBottom:2}}>
+          {TABS.map((t,i)=>(
+            <button key={i} onClick={()=>setTab(i)} style={{
+              flexShrink:0,padding:"9px 14px",borderRadius:10,
+              background:tab===i?`linear-gradient(135deg,${T.goldDk},${T.gold})`:T.card,
+              border:`1px solid ${tab===i?T.gold:T.borderG}`,
+              color:tab===i?"#0a0700":T.textDim,fontSize:12,
+              fontWeight:tab===i?700:400,cursor:"pointer",
+              fontFamily:"'Noto Serif SC',serif"}}>{t}</button>
+          ))}
+        </div>
+
+        {/* Tab 0: Fortune (今日/流年) */}
+        {tab===0&&<FortuneTab vars={vars} show={show} paid={paid} onUpgrade={()=>setShowPaywall(true)}/>}
+
+        {/* Tab 1: Overview */}
+        {tab===1&&(
+          <div style={{opacity:show?1:0,transform:show?"none":"translateY(14px)",
+            transition:"opacity 0.4s,transform 0.4s"}}>
+            {/* Main character big circle */}
+            <div style={{background:T.card,border:`1px solid ${T.borderG}`,
+              borderRadius:16,padding:"32px 20px",textAlign:"center",marginBottom:14,
+              position:"relative",overflow:"hidden"}}>
+              <div style={{position:"absolute",inset:0,opacity:0.4,pointerEvents:"none",
+                background:`radial-gradient(circle at 50% 35%, ${T.gold}15, transparent 60%)`}}/>
+              <div style={{color:T.textDim,fontSize:10,letterSpacing:4,marginBottom:18,position:"relative"}}>
+                主 性 格 数 字 · MAIN CHARACTER
+              </div>
+              {/* Big circle */}
+              <div style={{width:130,height:130,borderRadius:"50%",margin:"0 auto 18px",
+                background:`radial-gradient(circle at 35% 30%,#f8e8a0,#c9a84c,#5a4418)`,
+                display:"flex",alignItems:"center",justifyContent:"center",
+                boxShadow:`0 0 40px ${T.gold}55, inset 0 2px 8px rgba(255,255,255,0.3)`,
+                position:"relative"}}>
+                <span style={{color:"#1a0e00",fontSize:64,fontWeight:700,fontFamily:"Georgia,serif"}}>{vars.G}</span>
+              </div>
+              <div style={{color:T.goldLt,fontSize:20,fontWeight:700,position:"relative"}}>
+                {ND[vars.G]?.title}
+              </div>
+              <div style={{color:T.textSub,fontSize:12,marginTop:4,fontStyle:"italic",position:"relative"}}>
+                「{ND[vars.G]?.tag}」
+              </div>
+              {/* element badge */}
+              <div style={{display:"inline-block",marginTop:14,padding:"5px 16px",borderRadius:20,
+                background:`${EL_CLR[EL_MAP[vars.G]]}18`,border:`1px solid ${EL_CLR[EL_MAP[vars.G]]}55`,
+                position:"relative"}}>
+                <span style={{color:EL_CLR[EL_MAP[vars.G]],fontSize:13,fontWeight:600}}>
+                  五行属{EL_MAP[vars.G]} · {EL_EN[EL_MAP[vars.G]]}
+                </span>
+              </div>
+            </div>
+
+            {/* Master verdict */}
+            <div style={{padding:"14px 16px",borderRadius:12,marginBottom:14,
+              background:`${T.gold}0d`,border:`1px solid ${T.gold}44`,textAlign:"center"}}>
+              <div style={{color:T.gold,fontSize:10,letterSpacing:3,marginBottom:6}}>◈ 命 格 断 语</div>
+              <div style={{color:T.goldLt,fontSize:14,lineHeight:1.7,fontStyle:"italic"}}>
+                {ND[vars.G]?.verdict}
+              </div>
+            </div>
+
+            {/* Traits - single column */}
+            <div style={{padding:"14px 16px",borderRadius:12,background:T.card,
+              border:`1px solid ${T.green}33`,marginBottom:10}}>
+              <div style={{color:T.green,fontSize:11,fontWeight:700,marginBottom:6}}>✦ 天赋</div>
+              <div style={{color:T.text,fontSize:13,lineHeight:1.7}}>{ND[vars.G]?.pos}</div>
+            </div>
+            <div style={{padding:"14px 16px",borderRadius:12,background:T.card,
+              border:`1px solid ${T.red}33`,marginBottom:14}}>
+              <div style={{color:T.red,fontSize:11,fontWeight:700,marginBottom:6}}>◈ 隐患</div>
+              <div style={{color:T.text,fontSize:13,lineHeight:1.7}}>{ND[vars.G]?.neg}</div>
+            </div>
+
+            <MissingBar missing={missing}/>
+          </div>
+        )}
+
+        {/* Tab 2: Number Reference */}
+        {tab===2&&(
+          <div style={{opacity:show?1:0,transform:show?"none":"translateY(14px)",
+            transition:"opacity 0.4s,transform 0.4s"}}>
+            <div style={{padding:"12px 14px",borderRadius:12,marginBottom:12,
+              background:T.card,border:`1px solid ${T.borderG}`}}>
+              <div style={{color:T.text,fontSize:13,fontWeight:600,marginBottom:6}}>
+                数字特质参考 / Number Character Reference</div>
+              <div style={{display:"flex",gap:8}}>
+                <div style={{display:"flex",alignItems:"center",gap:5}}>
+                  <div style={{width:10,height:10,borderRadius:"50%",background:T.green}}/>
+                  <span style={{color:T.textDim,fontSize:10}}>已具备</span>
+                </div>
+                <div style={{display:"flex",alignItems:"center",gap:5}}>
+                  <div style={{width:10,height:10,borderRadius:"50%",background:T.amber}}/>
+                  <span style={{color:T.textDim,fontSize:10}}>缺失（待培养）</span>
+                </div>
+              </div>
+            </div>
+            {[1,2,3,4,5,6,7,8,9].map(n=>(
+              <NumRefCard key={n} n={n} hasIt={allNums.includes(n)} isMissing={missing.includes(n)}/>
+            ))}
+          </div>
+        )}
+
+        {/* Tab 3: Five Elements */}
+        {tab===3&&(
+          <div style={{opacity:show?1:0,transform:show?"none":"translateY(14px)",
+            transition:"opacity 0.4s,transform 0.4s"}}>
+            <div style={{color:T.textDim,fontSize:10,letterSpacing:2,marginBottom:14,textAlign:"center"}}>
+              五行能量分析 Five Elements</div>
+            {paid?(
+              <FiveTable vars={vars}/>
+            ):(
+              <div style={{position:"relative"}}>
+                {/* blurred teaser */}
+                <div style={{filter:"blur(7px)",pointerEvents:"none",userSelect:"none",
+                  maxHeight:340,overflow:"hidden"}}>
+                  <FiveTable vars={vars}/>
+                </div>
+                {/* lock overlay */}
+                <div style={{position:"absolute",inset:0,borderRadius:14,
+                  background:"linear-gradient(180deg,rgba(10,7,5,0.5),rgba(10,7,5,0.96))",
+                  display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",
+                  gap:10,cursor:"pointer",padding:20,textAlign:"center"}} onClick={()=>setShowPaywall(true)}>
+                  <div style={{fontSize:30}}>🔒</div>
+                  <div style={{color:T.goldLt,fontSize:17,fontWeight:700}}>解锁五行能量分析</div>
+                  <div style={{color:T.textDim,fontSize:12,lineHeight:1.7,maxWidth:280}}>
+                    看清你在五大人生领域的能量分布——<br/>自我决断 · 子女财运 · 事业姻缘 · 创业健康 · 亲情贵人</div>
+                  <div style={{marginTop:6,padding:"11px 26px",borderRadius:24,
+                    background:`linear-gradient(135deg,${T.goldDk},${T.gold},${T.goldLt})`,
+                    color:"#0a0700",fontSize:14,fontWeight:700,
+                    boxShadow:`0 4px 20px ${T.goldGl}`}}>7 天免费试用</div>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Tab 4: 13 Groups */}
+        {tab===4&&(
+          <div>
+            <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",
+              marginBottom:12,padding:"10px 14px",borderRadius:10,
+              background:T.card,border:`1px solid ${T.borderG}`}}>
+              <div>
+                <div style={{color:T.text,fontSize:12}}>{paid?"完整版 · 全13组":"免费版 · 前3组"}</div>
+                <div style={{color:T.textDim,fontSize:10}}>解锁全部命理组合</div>
+              </div>
+              {!paid&&(
+                <button onClick={()=>setShowPaywall(true)} style={{
+                  padding:"7px 14px",borderRadius:8,fontSize:11,fontWeight:700,
+                  background:`linear-gradient(135deg,${T.goldDk},${T.gold})`,
+                  border:"none",cursor:"pointer",color:"#0a0700"}}>
+                  解锁全部</button>
+              )}
+            </div>
+            <div style={{color:T.textSub,fontSize:11,marginBottom:12,textAlign:"center",letterSpacing:1}}>
+              13 组合解读 / 13 Combinations Reading</div>
+            {groups.map((g,i)=>(
+              <div key={g.id} onClick={()=>{if(!paid&&i>=3)setShowPaywall(true);}}>
+                <GroupCard group={g} idx={i} show={show} locked={!paid&&i>=3}/>
+              </div>
+            ))}
+            {!paid&&(
+              <div style={{margin:"20px 0",padding:22,borderRadius:16,textAlign:"center",
+                background:`linear-gradient(135deg,#1a1208,#0f0c05)`,border:`1px solid ${T.gold}55`}}>
+                <div style={{color:T.goldLt,fontSize:17,fontWeight:600,marginBottom:8}}>还有 10 组深度解读等你揭晓</div>
+                <div style={{color:T.textDim,fontSize:12,marginBottom:18,lineHeight:1.7}}>
+                  事业旅程 · 婚姻走向 · 财富密码<br/>隐藏潜意识 · 流年完整运势</div>
+                <button onClick={()=>setShowPaywall(true)} style={{
+                  width:"100%",padding:15,borderRadius:11,
+                  background:`linear-gradient(135deg,${T.goldDk},${T.gold},${T.goldLt})`,
+                  border:"none",cursor:"pointer",fontSize:15,fontWeight:700,
+                  color:"#0a0700",fontFamily:"'Noto Serif SC',serif",
+                  boxShadow:`0 4px 20px ${T.goldGl}`}}>7 天免费试用 · 解锁完整命盘</button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Paywall modal */}
+      {showPaywall&&(
+        <Paywall onClose={()=>setShowPaywall(false)}
+          onSubscribe={()=>{setPaid(true);setShowPaywall(false);}}/>
+      )}
+    </div>
+  );
+}
+
+/* ══ ROOT ══ */
+function App(){
+  const[page,setPage]=useState("home");
+  const[report,setReport]=useState(null);
+  if(page==="home") return (<HomePage onStart={()=>setPage("input")}/>);
+  if(page==="input") return (<InputPage onBack={()=>setPage("home")}
+    onResult={r=>{setReport(r);setPage("report");}}/>);
+  if(page==="report") return (<ReportPage data={report} onBack={()=>setPage("input")}/>);
+  return null;
+}
+
+// Mount the app
+const rootEl = document.getElementById("root");
+const root = ReactDOM.createRoot(rootEl);
+root.render(React.createElement(App));
+
+  </script>
+</body>
+</html>
