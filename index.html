@@ -960,7 +960,7 @@ const TABS=["今日/流年","命格概览","数字特质","五行","13组合"];
 function ReportPage({data,onBack}){
   const[tab,setTab]=useState(0);
   const[show,setShow]=useState(false);
-  const[paid,setPaid]=useState(true); // TEMP: set to true for screenshots, change back to false before shipping!
+  const[paid,setPaid]=useState(false);
   const[showPaywall,setShowPaywall]=useState(false);
   useEffect(()=>{setTimeout(()=>setShow(true),80);},[]);
 
